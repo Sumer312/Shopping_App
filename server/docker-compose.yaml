@@ -1,0 +1,17 @@
+version: '3'
+services:
+  app:
+    container_name: PMS
+    restart: always
+    build: .
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./images:/home/sumer/Documents/Projects/dummy/server/images
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
