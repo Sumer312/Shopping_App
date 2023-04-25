@@ -1,18 +1,30 @@
+import { useEffect, useRef, useState } from "react";
+import useStore from "@/components/store/store";
+
 interface cardTypes {
   title: string;
   snippet: string;
   description: string;
-  imageUrl: string;
+  imageObj: { publicId: string; secureUrl: string };
   price: number;
 }
 
 //"https://jojo-news.com/wp-content/uploads/2021/07/JJLEnding-1024x576.png"
 
 export default function Product(props: cardTypes) {
+  const theme = useStore((state) => state.theme);
+  const [stateTheme, setStateTheme] = useState<string>();
+  useEffect(() => {
+    setStateTheme(theme);
+  }, [theme]);
   return (
-    <div className="card w-96 glass">
+    <div className="card w-96 hover:bg-accent" data-theme={stateTheme}>
       <figure>
-        <img className="card-img-top" src={props.imageUrl} alt="image!" />
+        <img
+          className="card-img-top"
+          src={props.imageObj.secureUrl}
+          alt="image!"
+        />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{props.title}</h2>

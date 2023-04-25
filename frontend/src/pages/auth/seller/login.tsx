@@ -1,4 +1,4 @@
-import { useReducer, Reducer, MouseEvent } from "react";
+import { useReducer, Reducer, MouseEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { setCookie } from "cookies-next";
@@ -22,7 +22,12 @@ interface ActionType {
 
 export default function Login() {
   const theme = useStore((state) => state.theme);
-  const changeTheme = useStore((state) => state.changeTheme);
+  const [stateTheme, setStateTheme] = useState<string>();
+
+  useEffect(() => {
+    setStateTheme(theme);
+  }, [theme]);
+
   const [state, dispatch] = useReducer<Reducer<StateType, ActionType>>(
     (state: StateType, action: ActionType): StateType => {
       switch (action.type) {
@@ -60,10 +65,8 @@ export default function Login() {
             email: email,
             password: password,
           },
+          withCredentials: true,
         });
-        if (response.data) {
-          setCookie("seller", JSON.stringify(response.data));
-        }
       } catch (err) {
         console.log(err);
       }
@@ -74,7 +77,7 @@ export default function Login() {
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         <div
           className={
-            theme === themeEnum.DARK
+            stateTheme === themeEnum.DARK
               ? "absolute inset-0 bg-gradient-to-r from-violet-200 to-violet-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
               : "absolute inset-0 bg-gradient-to-r from-amber-200 to-amber-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
           }

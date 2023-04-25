@@ -6,10 +6,11 @@ import {
   useEffect,
   useRef,
 } from "react";
-import { getCookie } from "cookies-next";
 import useStore from "@/components/store/store";
 import { themeEnum } from "@/components/store/store";
 import axios from "./api/axios";
+import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -39,8 +40,16 @@ interface StateType {
   category: undefined | string;
 }
 
-export default function AddProd() {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  return {
+    //@ts-ignore
+    props: { token: req.cookies.seller },
+  };
+};
+//@ts-ignore
+export default function AddProd({ token }) {
   const theme = useStore((state) => state.theme);
+  const router = useRouter();
   const [stateTheme, setStateTheme] = useState<string>();
   useEffect(() => {
     setStateTheme(theme);
@@ -143,13 +152,13 @@ export default function AddProd() {
       }
     },
     {
-      title: undefined,
-      snippet: undefined,
+      title: "",
+      snippet: "",
       price: undefined,
       quantity: undefined,
-      coverImage: undefined,
+      coverImage: "",
       imageArray: undefined,
-      description: undefined,
+      description: "",
       category: undefined,
     }
   );
@@ -168,9 +177,8 @@ export default function AddProd() {
       };
     });
   };
-  async function upload(event: MouseEvent<HTMLElement>) {
+  async function handleSubmit(event: MouseEvent<HTMLElement>) {
     event.preventDefault();
-    const token = getCookie("seller");
     const {
       title,
       snippet,
@@ -181,26 +189,38 @@ export default function AddProd() {
       price,
       quantity,
     } = state;
-    if (title && snippet && description && price && quantity && coverImage && category) {
+    if (
+      title &&
+      snippet &&
+      description &&
+      price &&
+      quantity &&
+      coverImage &&
+      category
+    ) {
       try {
-        await axios.post(
-          `/seller/post`,
-          {
-            title: title,
-            snippet: snippet,
-            description: description,
-            price: price,
-            quantity: quantity,
-            coverImage: JSON.parse(coverImage),
-            imageArray: imageArray,
-            category: category,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
+        await axios
+          .post(
+            `/seller/post`,
+            {
+              title: title,
+              snippet: snippet,
+              description: description,
+              price: price,
+              quantity: quantity,
+              coverImage: JSON.parse(coverImage),
+              imageArray: imageArray,
+              category: category,
             },
-          }
-        );
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          // .then((result) => {
+          //   router.push(`/${result.data.category}`);
+          // });
       } catch (err) {
         console.log("Data not uploaded, err: " + err);
       }
@@ -435,6 +455,7 @@ export default function AddProd() {
             className="select select-accent -mt-48 w-full max-w-xs"
             value={state.category}
             data-theme={stateTheme}
+            defaultValue="Mtops"
             onChange={(event) => {
               dispatch({
                 type: ActionEnum.SET_CATEGORY,
@@ -463,7 +484,7 @@ export default function AddProd() {
             className="btn btn-lg btn-outline btn-accent xs:btn-wide sm:btn-wide"
             data-theme={stateTheme}
             type="submit"
-            onClick={upload}
+            onClick={handleSubmit}
           >
             submit
           </button>

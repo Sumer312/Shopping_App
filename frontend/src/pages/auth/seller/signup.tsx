@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { Reducer, useReducer, MouseEvent } from "react";
+import { Reducer, useReducer, MouseEvent, useEffect, useState } from "react";
 import axios from "axios";
 import { NextRequest } from "next/server";
-import { getCookie, setCookie } from "cookies-next";
 import { themeEnum } from "@/components/store/store";
 import useStore from "@/components/store/store";
 
@@ -27,7 +26,12 @@ interface ActionType {
 
 export default function SignUp(req: NextRequest) {
   const theme = useStore((state) => state.theme);
-  const changeTheme = useStore((state) => state.changeTheme);
+  const [stateTheme, setStateTheme] = useState<string>();
+
+  useEffect(() => {
+    setStateTheme(theme);
+  }, [theme]);
+
   const [state, dispatch] = useReducer<Reducer<StateType, ActionType>>(
     (state: StateType, action: ActionType): StateType => {
       switch (action.type) {
@@ -88,13 +92,8 @@ export default function SignUp(req: NextRequest) {
             email: email,
             password: password,
           },
-          withCredentials: true 
+          withCredentials: true,
         });
-        if (response.data) {
-          console.log(response.data)
-          setCookie(response.data.role, response.data.token);
-          console.log(getCookie(response.data.role));
-        }
       } catch (err) {
         console.log(err);
       }
@@ -105,7 +104,7 @@ export default function SignUp(req: NextRequest) {
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
         <div
           className={
-            theme === themeEnum.DARK
+            stateTheme === themeEnum.DARK
               ? "absolute inset-0 bg-gradient-to-r from-violet-200 to-violet-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
               : "absolute inset-0 bg-gradient-to-r from-amber-200 to-amber-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
           }

@@ -1,5 +1,9 @@
 import { Schema, model, ObjectId } from "mongoose";
-import { imageObjectType} from "../types";
+
+const imageSchema = new Schema({
+  publicId: String,
+  secureUrl: String,
+});
 
 const ProductSchema = new Schema({
   title: {
@@ -22,12 +26,12 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
   },
-  coverImageUrl: {
-    type: String,
+  coverImage: {
+    type: Schema.Types.Mixed,
     required: true,
   },
   imageArray: {
-    type: Array<imageObjectType>,
+    type: Array<{ publicId: String; secureUrl: String }>,
   },
   category: {
     type: String,

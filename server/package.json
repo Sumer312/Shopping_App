@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn tsc && nodemon index.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",

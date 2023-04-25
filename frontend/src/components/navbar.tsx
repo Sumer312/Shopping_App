@@ -1,7 +1,6 @@
 import Link from "next/link";
-import useStore from "../components/store/store";
+import useStore, { themeEnum } from "../components/store/store";
 import { useEffect, useState } from "react";
-
 
 interface Submenu {
   gender: string;
@@ -17,9 +16,11 @@ export default function Navbar() {
   }, [theme]);
   return (
     <>
-      <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-60">
+      <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-20">
         <div className="flex-1">
-          <Link className="btn btn-ghost normal-case text-xl" href="/">Clothing Website</Link>
+          <Link className="btn btn-ghost normal-case text-xl" href="/">
+            Clothing Website
+          </Link>
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1 mr-8">
@@ -100,7 +101,11 @@ export default function Navbar() {
             </li>
             <li>
               <img
-                src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/256/external-brightness-photography-xnimrodx-lineal-color-xnimrodx.png"
+                src={
+                  stateTheme === themeEnum.LIGHT
+                    ? "https://img.icons8.com/ios-glyphs/256/bright-moon--v2.png"
+                    : "https://img.icons8.com/material-rounded/96/FFFFFF/sun--v1.png"
+                }
                 alt="Theme"
                 width="60"
                 height="40"
@@ -129,7 +134,9 @@ export default function Navbar() {
           </button>
         </div>
         <div className="flex-1">
-          <Link className="btn btn-ghost normal-case text-xl" href="/">Clothing Website</Link>
+          <Link className="btn btn-ghost normal-case text-xl" href="/">
+            Clothing Website
+          </Link>
         </div>
         <div className="flex-none">
           <button className="btn btn-square btn-ghost">

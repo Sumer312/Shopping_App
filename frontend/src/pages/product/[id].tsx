@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styles from "@/styles/Home.module.css";
@@ -9,13 +9,18 @@ interface prodType {
   title: string;
   snippet: string;
   description: string;
-  coverImageUrl: string;
+  coverImage: { publicId: string; secureUrl: string };
   imageArray: Array<{ publicId: string; secureUrl: string }>;
   price: number;
   quantity: number;
 }
 
 export default function details() {
+  const theme = useStore((state) => state.theme);
+  const [stateTheme, setStateTheme] = useState<string>();
+  useEffect(() => {
+    setStateTheme(theme);
+  }, [theme]);
   const [prod, setProd] = useState<prodType>();
   const router = useRouter();
   useEffect(() => {
@@ -34,7 +39,7 @@ export default function details() {
 
   function CarouselReady(obj: prodType) {
     let combinedArray: Array<string> = [];
-    combinedArray.push(obj.coverImageUrl);
+    combinedArray.push(obj.coverImage.secureUrl);
     for (let i = 0; i < obj.imageArray.length; i++) {
       combinedArray.push(obj.imageArray[i].secureUrl);
     }
@@ -43,11 +48,16 @@ export default function details() {
 
   return (
     <main className={styles.main}>
-      { prod ? <Carousel imageArray={CarouselReady(prod)} /> : "" }
+      {prod ? <Carousel imageArray={CarouselReady(prod)} /> : ""}
       <h1>{prod?.title}</h1>
       <p>{prod?.description}</p>
       <p>{prod?.price}</p>
-      <button className="btn btn-lg btn-wide glass ">Buy Now</button>
+      <button
+        data-theme={stateTheme}
+        className="btn btn-lg btn-wide btn-outline btn-accent "
+      >
+        Buy Now
+      </button>
     </main>
-  ) 
+  );
 }

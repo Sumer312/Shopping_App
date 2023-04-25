@@ -25,14 +25,23 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   });
   try {
     const accessToken = await createAccessToken(seller._id, "seller");
-    res.status(201).json({
-      id: seller._id,
-      name: seller.name,
-      email: seller.email,
-      token: accessToken,
-      message: "seller account created",
-      role: "seller",
-    });
+    // res.status(201).json({
+    //   id: seller._id,
+    //   name: seller.name,
+    //   email: seller.email,
+    //   token: accessToken,
+    //   message: "seller account created",
+    //   role: "seller",
+    // });
+    res
+      .status(201)
+      .cookie("seller", accessToken, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+        path: "/",
+      })
+      .json({ message: "cookie sent", role: "seller" });
   } catch (err) {
     console.log(err);
     res.status(404).json(err);
@@ -66,6 +75,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   );
 };
 
+
 const handleData = async (req: Request, res: Response, next: NextFunction) => {
   const {
     title,
@@ -76,33 +86,50 @@ const handleData = async (req: Request, res: Response, next: NextFunction) => {
     coverImage,
     imageArray,
     category,
-  } = await req.body;
+  } = req.body;
   try {
+    cloudinary.api
+      .ping()
+      .then((res) => {
+        console.log(`Cloudinary connection ${res.status}`);
+      })
+      .catch((err) => console.log(err + "OH NOOOOOO!!!!"));
+
     const imageUrlArray: Array<imageObjectType> = [];
     const coverImageUpload = await cloudinary.uploader.upload(coverImage);
-    for (let i = 0; i < imageArray.length; i++) {
-      await cloudinary.uploader.upload(imageArray[i]).then((result) => {
+    if (imageArray !== undefined) {
+      const sleep = (time: number) => {
+        return new Promise((resolve) => setTimeout(resolve, time));
+      };
+      for (let i = 0; i < imageArray.length; i++) {
+        const image = await cloudinary.uploader.upload(imageArray[i]);
         imageUrlArray.push({
-          publicId: result.public_id,
-          secureUrl: result.secure_url,
+          publicId: image.public_id,
+          secureUrl: image.secure_url,
         });
-      });
+      }
     }
-    console.log(req.seller)
+    console.log(req.seller);
     const product = await Product.create({
       title: title,
       snippet: snippet,
       description: description,
       quantity: quantity,
       price: price,
-      coverImageUrl: coverImageUpload.secure_url,
+      coverImage: {
+        publicId: coverImageUpload.public_id,
+        secureUrl: coverImageUpload.secure_url,
+      },
       imageArray: imageUrlArray,
       category: category,
       sellerId: req.seller,
     });
     console.log(product);
     if (product) {
-      res.status(200).json({ message: "Product added" });
+      res.status(200).json({
+        message: "Product added",
+        category: category,
+      });
     }
   } catch (err) {
     console.log(err);

@@ -1,4 +1,4 @@
-import { useReducer, Reducer, MouseEvent } from "react";
+import { useReducer, Reducer, MouseEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import useStore from "@/components/store/store";
@@ -20,7 +20,13 @@ interface ActionType {
 }
 
 export default function Login() {
-  const theme = useStore(state => state.theme)
+  const theme = useStore((state) => state.theme);
+  const [stateTheme, setStateTheme] = useState<string>();
+
+  useEffect(() => {
+    setStateTheme(theme);
+  }, [theme]);
+
   const [state, dispatch] = useReducer<Reducer<StateType, ActionType>>(
     (state: StateType, action: ActionType): StateType => {
       switch (action.type) {
@@ -51,13 +57,14 @@ export default function Login() {
       return;
     } else {
       try {
-        await axios({
+        const response = await axios({
           method: "post",
           url: `http://localhost:5000/consumer/login`,
           data: {
             email: email,
             password: password,
           },
+          withCredentials: true,
         });
       } catch (err) {
         console.log(err);
@@ -67,11 +74,13 @@ export default function Login() {
   return (
     <div className="min-h-screen py-6 flex flex-col justify-center sm:py-12">
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className={
-            theme === themeEnum.DARK
+        <div
+          className={
+            stateTheme === themeEnum.DARK
               ? "absolute inset-0 bg-gradient-to-r from-violet-200 to-violet-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
               : "absolute inset-0 bg-gradient-to-r from-amber-200 to-amber-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
-          }></div>
+          }
+        ></div>
         <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
           <div className="max-w-md mx-auto">
             <div>
