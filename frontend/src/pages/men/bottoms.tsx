@@ -3,17 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Product from "@/components/card";
 import Link from "next/link";
-
-interface cardType {
-  _id: string;
-  title: string;
-  snippet: string;
-  description: string;
-  quantity: number;
-  price: number;
-  coverImage: { publicId: string; secureUrl: string };
-  imageArray: Array<{ publicId: string; secureUrl: string }>;
-}
+import { cardType } from "../../../types";
 
 const params: string = "Mbots";
 

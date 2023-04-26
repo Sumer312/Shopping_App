@@ -4,16 +4,7 @@ import { useRouter } from "next/router";
 import styles from "@/styles/Home.module.css";
 import useStore from "@/components/store/store";
 import Carousel from "@/components/carousel";
-
-interface prodType {
-  title: string;
-  snippet: string;
-  description: string;
-  coverImage: { publicId: string; secureUrl: string };
-  imageArray: Array<{ publicId: string; secureUrl: string }>;
-  price: number;
-  quantity: number;
-}
+import { prodType } from "../../../types";
 
 export default function details() {
   const theme = useStore((state) => state.theme);

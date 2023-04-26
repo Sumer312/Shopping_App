@@ -3,19 +3,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Product from "@/components/card";
 import Link from "next/link";
+import { cardType } from "../../../types";
 
 const params: string = "Wbots";
-
-interface cardType {
-  _id: string;
-  title: string;
-  snippet: string;
-  description: string;
-  quantity: number;
-  price: number;
-  coverImage: { publicId: string; secureUrl: string };
-  imageArray: Array<{ publicId: string; secureUrl: string }>;
-}
 
 export default function top() {
   const [cards, setCards] = useState<Array<cardType> | undefined>(undefined);

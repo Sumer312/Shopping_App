@@ -1,17 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import useStore from "@/components/store/store";
-
-interface cardTypes {
-  title: string;
-  snippet: string;
-  description: string;
-  imageObj: { publicId: string; secureUrl: string };
-  price: number;
-}
+import { cardPropType } from "types";
 
 //"https://jojo-news.com/wp-content/uploads/2021/07/JJLEnding-1024x576.png"
 
-export default function Product(props: cardTypes) {
+export default function Product(props: cardPropType) {
   const theme = useStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
   useEffect(() => {

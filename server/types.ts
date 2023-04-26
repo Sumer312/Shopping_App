@@ -1,11 +1,11 @@
-import { Document, Schema } from "mongoose";
+import { Document, Schema, HydratedDocument } from "mongoose";
 
-interface cartType {
+export interface cartType {
   productID: Schema.Types.ObjectId;
   quantity: number;
 }
 
-interface sellerType extends Document {
+export interface sellerType extends Document {
   name: string;
   email: string;
   password: string;
@@ -13,7 +13,7 @@ interface sellerType extends Document {
   resetTokenExpirationDate: Date;
 }
 
-interface consumerType extends Document {
+export interface consumerType extends Document {
   name: string;
   email: string;
   password: string;
@@ -29,23 +29,23 @@ interface consumerType extends Document {
   cart: {
     items: Array<cartType>;
   };
-  addToCart(product: productType): void;
+  addToCart(product: any): void;
   removeFromCart(productId: Schema.Types.ObjectId): void;
   clearCart(): void;
 }
 
-interface imageObjectType {
+export interface imageObjectType {
   publicId: string;
   secureUrl: string;
 }
 
-interface FileFilterCallback {
+export interface FileFilterCallback {
   error: null | Error;
   filename: string;
 }
 
 declare module "express-serve-static-core" {
-  interface Request {
+  export interface Request {
     seller: HydratedDocument<sellerType>;
     consumer: HydratedDocument<consumerType>;
   }

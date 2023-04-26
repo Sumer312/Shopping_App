@@ -7,7 +7,7 @@ import cloudinary from "../config/cloudinary";
 import { createAccessToken } from "./auth";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
-  const { name, email, password } = await req.body;
+  const { name, email, password } = req.body;
   await Seller.findOne({ name: name, email: email, password: password }).then(
     (seller) => {
       if (seller) {
@@ -25,14 +25,6 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   });
   try {
     const accessToken = await createAccessToken(seller._id, "seller");
-    // res.status(201).json({
-    //   id: seller._id,
-    //   name: seller.name,
-    //   email: seller.email,
-    //   token: accessToken,
-    //   message: "seller account created",
-    //   role: "seller",
-    // });
     res
       .status(201)
       .cookie("seller", accessToken, {
@@ -59,14 +51,15 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       } else {
         try {
           const accessToken = await createAccessToken(seller._id, "seller");
-          res.status(200).json({
-            _id: seller._id,
-            name: seller.name,
-            email: seller.email,
-            token: accessToken,
-            message: "Successfully logged in",
-            role: "seller",
-          });
+          res
+            .status(200)
+            .cookie("seller", accessToken, {
+              httpOnly: true,
+              sameSite: "none",
+              secure: true,
+              path: "/",
+            })
+            .json({ message: "cookie sent", role: "seller" });
         } catch (err) {
           console.log(err);
         }
@@ -74,7 +67,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     }
   );
 };
-
 
 const handleData = async (req: Request, res: Response, next: NextFunction) => {
   const {

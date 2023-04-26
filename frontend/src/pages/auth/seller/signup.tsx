@@ -4,6 +4,7 @@ import axios from "axios";
 import { NextRequest } from "next/server";
 import { themeEnum } from "@/components/store/store";
 import useStore from "@/components/store/store";
+import useAuthStore, { authEnum } from "@/components/store/authStore";
 
 enum ActionEnum {
   SET_NAME = "SET_NAME",
@@ -25,12 +26,23 @@ interface ActionType {
 }
 
 export default function SignUp(req: NextRequest) {
+  const role = useAuthStore((state) => state.role);
+  const changeRoleToSeller = useAuthStore((state) => state.changeRoleToSeller);
+  const changeRoleToConsumer = useAuthStore(
+    (state) => state.changeRoleToConsumer
+  );
+  const [stateRole, setStateRole] = useState<authEnum>();
+
   const theme = useStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
 
   useEffect(() => {
     setStateTheme(theme);
   }, [theme]);
+
+  useEffect(() => {
+    setStateRole(role);
+  }, [role]);
 
   const [state, dispatch] = useReducer<Reducer<StateType, ActionType>>(
     (state: StateType, action: ActionType): StateType => {
@@ -94,6 +106,9 @@ export default function SignUp(req: NextRequest) {
           },
           withCredentials: true,
         });
+        if (response.status === 201) {
+          changeRoleToSeller();
+        }
       } catch (err) {
         console.log(err);
       }

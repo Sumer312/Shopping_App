@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import useStore, { themeEnum } from "./store/store";
-interface imageArray {
-  imageArray: Array<string>;
-}
+import { imageArray } from "../../types";
+
 
 export default function Carousel(props: imageArray) {
   const theme = useStore((state) => state.theme);

@@ -11,6 +11,7 @@ import { themeEnum } from "@/components/store/store";
 import axios from "./api/axios";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import useAuthStore, { authEnum } from "@/components/store/authStore";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -42,12 +43,13 @@ interface StateType {
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   return {
-    //@ts-ignore
-    props: { token: req.cookies.seller },
+    props: {
+      token: req.cookies.seller,
+    },
   };
 };
-//@ts-ignore
-export default function AddProd({ token }) {
+
+export default function AddProd({ token }: any) {
   const theme = useStore((state) => state.theme);
   const router = useRouter();
   const [stateTheme, setStateTheme] = useState<string>();
@@ -199,28 +201,27 @@ export default function AddProd({ token }) {
       category
     ) {
       try {
-        await axios
-          .post(
-            `/seller/post`,
-            {
-              title: title,
-              snippet: snippet,
-              description: description,
-              price: price,
-              quantity: quantity,
-              coverImage: JSON.parse(coverImage),
-              imageArray: imageArray,
-              category: category,
+        await axios.post(
+          `/seller/post`,
+          {
+            title: title,
+            snippet: snippet,
+            description: description,
+            price: price,
+            quantity: quantity,
+            coverImage: JSON.parse(coverImage),
+            imageArray: imageArray,
+            category: category,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          // .then((result) => {
-          //   router.push(`/${result.data.category}`);
-          // });
+          }
+        );
+        // .then((result) => {
+        //   router.push(`/${result.data.category}`);
+        // });
       } catch (err) {
         console.log("Data not uploaded, err: " + err);
       }
