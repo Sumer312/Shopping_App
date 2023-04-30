@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { imageObjectType } from "../types";
 import cloudinary from "../config/cloudinary";
 import { createAccessToken } from "./auth";
+import "dotenv/config";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   const { name, email, password } = req.body;
@@ -27,13 +28,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     const accessToken = await createAccessToken(seller._id, "seller");
     res
       .status(201)
-      .cookie("seller", accessToken, {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-        path: "/",
-      })
-      .json({ message: "cookie sent", role: "seller" });
+      .json({ message: "cookie sent", token: accessToken, id: seller._id });
   } catch (err) {
     console.log(err);
     res.status(404).json(err);
@@ -51,15 +46,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       } else {
         try {
           const accessToken = await createAccessToken(seller._id, "seller");
-          res
-            .status(200)
-            .cookie("seller", accessToken, {
-              httpOnly: true,
-              sameSite: "none",
-              secure: true,
-              path: "/",
-            })
-            .json({ message: "cookie sent", role: "seller" });
+          res.status(200).json({
+            message: "token sent",
+            token: accessToken,
+            id: seller._id,
+          });
         } catch (err) {
           console.log(err);
         }
@@ -85,7 +76,7 @@ const handleData = async (req: Request, res: Response, next: NextFunction) => {
       .then((res) => {
         console.log(`Cloudinary connection ${res.status}`);
       })
-      .catch((err) => console.log(err + "OH NOOOOOO!!!!"));
+      .catch((err) => console.log(err + " OH NOOOOOO!!!!"));
 
     const imageUrlArray: Array<imageObjectType> = [];
     const coverImageUpload = await cloudinary.uploader.upload(coverImage);
@@ -128,4 +119,15 @@ const handleData = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { handleData, login, signup };
+const logoOut = async (req: Request, res: Response, next: NextFunction) => {
+  const { role } = req.body;
+  try {
+    console.log(role);
+    console.log(res.cookie);
+    res.status(200).json({ message: "cookie deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export { handleData, login, signup, logoOut };

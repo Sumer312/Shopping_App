@@ -26,7 +26,9 @@ const isAuth = async (req: Request, res: Response, next: NextFunction) => {
       ) as JwtPayload;
       req.seller = await Seller.findById(decodesToken._id);
       req.consumer = await Consumer.findById(decodesToken._id);
-      next();
+      if (req.seller !== null || req.consumer !== null) {
+        next();
+      }
     } else {
       console.log("not logged in");
       return res.status(401).json({ message: "unauthorized" });
