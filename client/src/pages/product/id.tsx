@@ -4,13 +4,14 @@ import styles from "../../styles/Home.module.css";
 import Carousel from "../../components/carousel";
 import { prodType } from "../../../types";
 import useThemeStore from "../../components/store/themeStore";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Details() {
   const theme = useThemeStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
   const [prod, setProd] = useState<prodType>();
   const params = useParams();
+  const navigate = useNavigate();
   
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function Details() {
       <button
         data-theme={stateTheme}
         className="btn btn-lg btn-wide btn-outline btn-accent "
+        onClick={() => navigate(`/buy-product/${params.prodId}`)}
       >
         Buy Now
       </button>

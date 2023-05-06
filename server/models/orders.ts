@@ -7,17 +7,12 @@ const OrderSchema = new Schema({
       quantity: { type: Number, required: true },
     },
   ],
-  user: {
-    name: {
-      type: String,
-      required: true,
-    },
-    userId: {
+    consumerId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "User",
+      ref: "Consumer",
     },
   },
-});
+);
 
 export default model("Order", OrderSchema);

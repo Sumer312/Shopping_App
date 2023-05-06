@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export enum themeEnum {
-  LIGHT = "cupcake",
+  LIGHT = "retro",
   DARK = "luxury",
 }
 

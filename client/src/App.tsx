@@ -20,7 +20,10 @@ import UnisexBottoms from "./pages/uinsex/bottoms.tsx";
 import UnisexHoodies from "./pages/uinsex/hoodies.tsx";
 import UnisexTops from "./pages/uinsex/tops.tsx";
 import Details from "./pages/product/id.tsx";
-import BadRequest from "./pages/badRequest.tsx";
+import BadRequest from "./pages/bad-request.tsx";
+import EditProd from "./pages/edit-product.tsx";
+import MyProds from "./pages/my-products.tsx";
+import BuyProd from "./pages/buy-product.tsx";
 import "./styles/globals.css";
 
 function App() {
@@ -46,19 +49,39 @@ function App() {
           />
           <Route
             path="/auth/seller/signup"
-            element={role !== authEnum.SELLER ? <SellerSignUp /> : <BadRequest />}
+            element={
+              role !== authEnum.SELLER ? <SellerSignUp /> : <BadRequest />
+            }
           />
           <Route
             path="/auth/consumer/signup"
-            element={role !== authEnum.CONSUMER ?  <ConsumerSignUp /> : <BadRequest />}
+            element={
+              role !== authEnum.CONSUMER ? <ConsumerSignUp /> : <BadRequest />
+            }
           />
           <Route
             path="/auth/consumer/login"
-            element={role !== authEnum.CONSUMER ?  <ConsumerLogin /> : <BadRequest />}
+            element={
+              role !== authEnum.CONSUMER ? <ConsumerLogin /> : <BadRequest />
+            }
           />
           <Route
             path="/add-product"
             element={role === authEnum.SELLER ? <AddProd /> : <SellerLogin />}
+          />
+          <Route
+            path="/edit-product/:prodId"
+            element={role === authEnum.SELLER ? <EditProd /> : <SellerLogin />}
+          />
+          <Route
+            path="/my-products"
+            element={role === authEnum.SELLER ? <MyProds /> : <SellerLogin />}
+          />
+          <Route
+            path="/buy-product/:prodId"
+            element={
+              role === authEnum.CONSUMER ? <BuyProd /> : <ConsumerLogin />
+            }
           />
           <Route path="/men/hoodies" element={<MenHoodies />} />
           <Route path="/men/tops" element={<MenTops />} />

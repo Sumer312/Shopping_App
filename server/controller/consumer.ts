@@ -3,6 +3,8 @@ import Product from "../models/products";
 import Consumer from "../models/consumers";
 import bcrypt from "bcrypt";
 import { createAccessToken } from "./auth";
+import Order from "../models/orders";
+
 const sendDataByCategory = async (
   req: Request,
   res: Response,
@@ -35,15 +37,12 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       } else {
         try {
           const accessToken = await createAccessToken(consumer._id, "Consumer");
-          res
-            .status(201)
-            .cookie("consumer", accessToken, {
-              httpOnly: true,
-              sameSite: "none",
-              secure: true,
-              path: "/",
-            })
-            .json({ message: "cookie sent", role: "consumer" });
+          res.status(200).json({
+            message: "token sent",
+            role: "consumer",
+            token: accessToken,
+            id: consumer._id,
+          });
         } catch (err) {
           console.log(err);
           res.status(404).json(err);
@@ -72,25 +71,56 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   });
   try {
     const accessToken = await createAccessToken(consumer._id, "Consumer");
-    res
-      .status(201)
-      .cookie("consumer", accessToken, {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-        path: "/",
-      })
-      .json({ message: "cookie sent", role: "consumer" });
+    res.status(201).json({
+      message: "token sent",
+      role: "consumer",
+      token: accessToken,
+      id: consumer._id,
+    });
   } catch (err) {
     console.log(err);
     res.status(404).json(err);
   }
 };
 
-const buyProduct = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+const placeOrder = async (req: Request, res: Response, next: NextFunction) => {
+  const { quantity, prodId, consumerId } = req.body;
+  const prod = await Product.findById(prodId);
+  if (!prod) {
+    res.status(404).json({ message: "No such product exists" });
+    return;
+  }
+  let flag: boolean = false;
+  Order.findOne({ consumerId: consumerId }).then((order) => {
+    if (order) {
+      if (order.products.length != 0) {
+        for (let i = 0; i < order.products.length; i++) {
+          if (order.products[i].product._id === prodId) {
+            order.products[i].quantity += quantity;
+            flag = true;
+            prod!.quantity -= quantity
+            prod.save()
+            res.status(200).json({ message: "New order added" });
+          }
+        }
+      }
+      if (flag === false) {
+        order.products.push({ product: prod, quantity: quantity });
+        prod!.quantity -= quantity
+        prod.save()
+        res.status(200).json({ message: "New order added" });
+      }
+    } else {
+      Order.create({
+        consumerId: consumerId,
+        products: [{ product: prod, quantity: quantity }],
+      }).then(() => {
+        prod!.quantity -= quantity
+        prod.save()
+        res.status(200).json({ message: "New order added" });
+      });
+    }
+  });
+};
 
-export { sendDataByCategory, sendDataById, buyProduct, login, signup };
+export { sendDataByCategory, sendDataById, placeOrder, login, signup };

@@ -200,7 +200,7 @@ export default function Navbar() {
                   onClick={changeTheme}
                 />
               </li>
-              <li onClick={() => changeRoleToGuest()}>Logout</li>
+              <li onClick={() => changeRoleToGuest()}><a>Logout</a></li>
             </ul>
           </div>
         </div>

@@ -1,14 +1,19 @@
 import { Router } from "express";
-import { buyProduct, login, sendDataByCategory, sendDataById } from "../controller/consumer";
+import {
+  login,
+  placeOrder,
+  sendDataByCategory,
+  sendDataById,
+} from "../controller/consumer";
 import isAuth from "../middleware/isAuth";
 import { signup } from "../controller/consumer";
 
 const router = Router();
 
-router.get("/get/:category", sendDataByCategory)
-router.get("/getById/:prodID", sendDataById)
-router.get("/login", login)
-router.get("/signup", signup)
-router.get("/buy/:prodID", isAuth, buyProduct)
+router.get("/get/:category", sendDataByCategory);
+router.get("/getById/:prodID", sendDataById);
+router.post("/login", login);
+router.post("/signup", signup);
+router.post("/place-order", isAuth, placeOrder);
 
-export default router
+export default router;

@@ -10,6 +10,7 @@ import useThemeStore from "../components/store/themeStore";
 import { themeEnum } from "../components/store/themeStore";
 import axios from "../../api/axios";
 import useAuthStore from "../components/store/authStore";
+import { useNavigate } from "react-router-dom";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -40,6 +41,7 @@ interface StateType {
 }
 
 export default function AddProd() {
+  const navigate = useNavigate();
   const theme = useThemeStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
   const token = useAuthStore((state) => state.token);
@@ -194,7 +196,7 @@ export default function AddProd() {
     ) {
       try {
         await axios.post(
-          `/seller/post`,
+          `/seller/add-product`,
           {
             title: title,
             snippet: snippet,
@@ -210,7 +212,11 @@ export default function AddProd() {
               Authorization: `Bearer ${token}`,
             },
           }
-        );
+        ).then(response => {
+          if(response.status === 200){
+            navigate(`/`)
+          }
+        });
       } catch (err) {
         console.log("Data not uploaded, err: " + err);
       }

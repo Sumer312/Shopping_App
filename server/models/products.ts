@@ -31,7 +31,7 @@ const ProductSchema = new Schema({
     required: true,
   },
   imageArray: {
-    type: Array<{ publicId: String; secureUrl: String }>,
+    type: [{ publicId: String, secureUrl: String }],
   },
   category: {
     type: String,

@@ -37,29 +37,35 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
-  await Seller.findOne({ email: email, password: password }).then(
-    async (seller) => {
-      if (!seller) {
-        res
-          .status(404)
-          .json({ message: "No account with these credentials found" });
-      } else {
-        try {
-          const accessToken = await createAccessToken(seller._id, "seller");
-          res.status(200).json({
-            message: "token sent",
-            token: accessToken,
-            id: seller._id,
-          });
-        } catch (err) {
-          console.log(err);
-        }
+  await Seller.findOne({ email: email }).then((seller) => {
+    if (!seller) {
+      res
+        .status(404)
+        .json({ message: "No account with these credentials found" });
+    } else {
+      try {
+        bcrypt.compare(password, seller.password, async (err, data) => {
+          if (err) {
+            throw err;
+          } else if (data) {
+            const accessToken = await createAccessToken(seller._id, "seller");
+            res.status(200).json({
+              message: "token sent",
+              token: accessToken,
+              id: seller._id,
+            });
+          } else {
+            res.status(400).json({ message: "Invalid password" });
+          }
+        });
+      } catch (err) {
+        console.log(err);
       }
     }
-  );
+  });
 };
 
-const handleData = async (req: Request, res: Response, next: NextFunction) => {
+const addProduct = async (req: Request, res: Response, next: NextFunction) => {
   const {
     title,
     snippet,
@@ -71,19 +77,17 @@ const handleData = async (req: Request, res: Response, next: NextFunction) => {
     category,
   } = req.body;
   try {
-    cloudinary.api
-      .ping()
-      .then((res) => {
-        console.log(`Cloudinary connection ${res.status}`);
-      })
-      .catch((err) => console.log(err + " OH NOOOOOO!!!!"));
+    // cloudinary.api
+    //   .ping()
+    //   .then((res) => {
+    //     console.log(`Cloudinary connection ${res.status}`);
+    //   })
+    //   .catch((err) => console.log(err + " OH NO!!!!"));
 
     const imageUrlArray: Array<imageObjectType> = [];
-    const coverImageUpload = await cloudinary.uploader.upload(coverImage);
+    const coverImageUpload = { public_id: "", secure_url: "" };
+    // await cloudinary.uploader.upload(coverImage);
     if (imageArray !== undefined) {
-      const sleep = (time: number) => {
-        return new Promise((resolve) => setTimeout(resolve, time));
-      };
       for (let i = 0; i < imageArray.length; i++) {
         const image = await cloudinary.uploader.upload(imageArray[i]);
         imageUrlArray.push({
@@ -119,15 +123,102 @@ const handleData = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const logoOut = async (req: Request, res: Response, next: NextFunction) => {
-  const { role } = req.body;
+const updateProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { title, snippet, description, quantity, price, sellerId, prodId } =
+    req.body;
   try {
-    console.log(role);
-    console.log(res.cookie);
-    res.status(200).json({ message: "cookie deleted" });
+    Product.findOneAndUpdate(
+      { sellerId: sellerId, _id: prodId },
+      {
+        title: title,
+        snippet: snippet,
+        description: description,
+        quantity: quantity,
+        price: price,
+      }
+    ).then(() => {
+      res.status(200).json({ message: "product updated" });
+    });
   } catch (err) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "internal server error" });
+    console.log(err);
   }
 };
 
-export { handleData, login, signup, logoOut };
+const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+  const { sellerId } = req.params;
+  const products = await Product.find({ sellerId: sellerId });
+  res
+    .status(products ? 200 : 404)
+    .json(
+      products
+        ? { message: "Products found", products: products }
+        : { message: "no products found" }
+    );
+};
+
+const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { prodId } = req.params;
+  const product = await Product.findById(prodId);
+  res
+    .status(product ? 200 : 404)
+    .json(
+      product
+        ? { message: "Product found", product: product }
+        : { message: "no product found" }
+    );
+};
+
+const deleteProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { sellerId, prodId } = req.body;
+  try {
+    Product.findOne({ sellerId: sellerId, _id: prodId })
+      .then(async (res) => {
+        try {
+          if (res) {
+            const { imageArray, coverImage } = res;
+            console.log(coverImage, "  ", imageArray);
+            await cloudinary.uploader.destroy(coverImage.public_id);
+            for (let i = 0; i < imageArray.length; i++) {
+              if (imageArray[i]) {
+                await cloudinary.uploader.destroy(imageArray[i].publicId!);
+              }
+            }
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      })
+      .then(() => {
+        return Product.findOneAndDelete({ sellerId: sellerId, _id: prodId });
+      })
+      .then(() => {
+        res.status(200).json({ message: "Product deleted" });
+      });
+  } catch (err) {
+    res.status(500).json({ message: "Internal server error" });
+    console.log(err);
+  }
+};
+
+export {
+  addProduct,
+  updateProduct,
+  login,
+  signup,
+  getProducts,
+  getProductById,
+  deleteProduct,
+};
