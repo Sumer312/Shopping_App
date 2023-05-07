@@ -1,5 +1,7 @@
 import { Router } from "express";
 import {
+  cancelOrder,
+  getOrders,
   login,
   placeOrder,
   sendDataByCategory,
@@ -15,5 +17,7 @@ router.get("/getById/:prodID", sendDataById);
 router.post("/login", login);
 router.post("/signup", signup);
 router.post("/place-order", isAuth, placeOrder);
+router.get("/my-orders/:consumerId", getOrders);
+router.delete("/cancel-order/:orderId", cancelOrder);
 
 export default router;

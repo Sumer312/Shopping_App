@@ -6,6 +6,20 @@ export interface cardPropType {
   price: number;
 }
 
+export interface ordersType {
+  _id: string;
+  products: Array<{
+    product: { title: string; price: number; _id: string; snippet: string };
+    quantity: number;
+  }>;
+  consumerId: string;
+}
+export interface orderCardType {
+  title: string;
+  snippet: string;
+  quantity: number;
+  id: string
+}
 export interface imageArray {
   imageArray: Array<string>;
 }

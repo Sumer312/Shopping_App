@@ -24,6 +24,7 @@ import BadRequest from "./pages/bad-request.tsx";
 import EditProd from "./pages/edit-product.tsx";
 import MyProds from "./pages/my-products.tsx";
 import BuyProd from "./pages/buy-product.tsx";
+import MyOrders from "./pages/my-orders.tsx";
 import "./styles/globals.css";
 
 function App() {
@@ -37,7 +38,11 @@ function App() {
   return (
     <div
       data-theme={stateTheme}
-      className={stateTheme === themeEnum.LIGHT ? "bg-white" : "bg-black"}
+      className={
+        stateTheme === themeEnum.LIGHT
+          ? "bg-white  text-secondary-content"
+          : "bg-black  text-neutral-content"
+      }
     >
       <BrowserRouter>
         <Navbar />
@@ -81,6 +86,12 @@ function App() {
             path="/buy-product/:prodId"
             element={
               role === authEnum.CONSUMER ? <BuyProd /> : <ConsumerLogin />
+            }
+          />
+           <Route
+            path="/my-orders"
+            element={
+              role === authEnum.CONSUMER ? <MyOrders /> : <ConsumerLogin />
             }
           />
           <Route path="/men/hoodies" element={<MenHoodies />} />

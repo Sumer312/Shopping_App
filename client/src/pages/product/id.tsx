@@ -12,7 +12,6 @@ export default function Details() {
   const [prod, setProd] = useState<prodType>();
   const params = useParams();
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     setStateTheme(theme);
@@ -38,7 +37,11 @@ export default function Details() {
 
   return (
     <main className={styles.main}>
-      {prod ? <Carousel imageArray={CarouselReady(prod)} /> : ""}
+      {prod ? (
+        <Carousel key={prod.title} imageArray={CarouselReady(prod)} />
+      ) : (
+        ""
+      )}
       <h1>{prod?.title}</h1>
       <p>{prod?.description}</p>
       <p>{prod?.price}</p>

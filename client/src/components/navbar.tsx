@@ -30,12 +30,9 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="flex-none">
-            <ul className="menu menu-horizontal px-1 mr-8">
+            <ul className="menu menu-horizontal px-1 mr-3">
               <li tabIndex={0}>
                 <Link to="/add-product">Add Product</Link>
-              </li>
-              <li tabIndex={0}>
-                <Link to="/my-products">My Products</Link>
               </li>
               <li tabIndex={0}>
                 <img
@@ -50,10 +47,32 @@ export default function Navbar() {
                   onClick={changeTheme}
                 />
               </li>
-              <li onClick={() => changeRoleToGuest()}>
-                <a>Logout</a>
-              </li>
             </ul>
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-8 rounded-full">
+                  <img
+                    className={
+                      stateTheme === themeEnum.DARK
+                        ? "bg-neutral-content"
+                        : "bg-accent"
+                    }
+                    src="https://img.icons8.com/?size=512&id=pETkiIKt6qBf&format=png"
+                  />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <Link to="/my-products">My Products</Link>
+                </li>
+                <li onClick={() => changeRoleToGuest()}>
+                  <a>Logout</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div className="fixed z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-60">
@@ -111,7 +130,7 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="flex-none">
-            <ul className="menu menu-horizontal px-1 mr-8">
+            <ul className="menu menu-horizontal px-1 mr-3">
               <li tabIndex={0}>
                 <a>
                   Men
@@ -200,8 +219,32 @@ export default function Navbar() {
                   onClick={changeTheme}
                 />
               </li>
-              <li onClick={() => changeRoleToGuest()}><a>Logout</a></li>
             </ul>
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-8 rounded-full">
+                  <img
+                    className={
+                      stateTheme === themeEnum.DARK
+                        ? "bg-neutral-content"
+                        : "bg-accent"
+                    }
+                    src="https://img.icons8.com/?size=512&id=pETkiIKt6qBf&format=png"
+                  />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <Link to="/my-orders">My Orders</Link>
+                </li>
+                <li onClick={() => changeRoleToGuest()}>
+                  <a>Logout</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div className="fixed z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-60">
@@ -259,7 +302,7 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="flex-none">
-            <ul className="menu menu-horizontal px-1 mr-8">
+            <ul className="menu menu-horizontal px-1 mr-3">
               <li tabIndex={0}>
                 <a>
                   Men
@@ -349,6 +392,31 @@ export default function Navbar() {
                 />
               </li>
             </ul>
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-8 rounded-full">
+                  <img
+                    className={
+                      stateTheme === themeEnum.DARK
+                        ? "bg-neutral-content"
+                        : "bg-primary"
+                    }
+                    src="https://img.icons8.com/?size=512&id=pETkiIKt6qBf&format=png"
+                  />
+                </div>
+              </label>
+              <ul
+                tabIndex={0}
+                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <a>My Orders</a>
+                </li>
+                <li onClick={() => changeRoleToGuest()}>
+                  <a>Logout</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div className="fixed z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-60">

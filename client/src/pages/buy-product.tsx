@@ -23,9 +23,10 @@ export default function BuyProd() {
   }, [theme]);
   useEffect(() => {
     axios.get(`consumer/getById/${prodId}`).then((res) => {
-      setProd(res.data);
+      console.log(JSON.parse(res.data));
+      setProd(JSON.parse(res.data));
     });
-  });
+  }, [prodId]);
 
   const placeOrder = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -42,13 +43,14 @@ export default function BuyProd() {
 
   return (
     <main className={styles.main}>
-      <h1>{prod ? prod.title : ""}</h1>
+      <h1>{prod && prod.title}</h1>
       <label htmlFor="quantity">Quantity</label>
       <input
         type="number"
         className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
         id="quantity"
         min="1"
+        max={prod?.quantity}
         value={quantity}
         onChange={(event) => setQuantity(parseInt(event.target.value))}
         data-theme={stateTheme}

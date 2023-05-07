@@ -21,9 +21,14 @@ export default function WomenTops() {
     <main className={styles.main}>
       <div className="grid gap-16 xl:grid-cols-4 xl:gap-16 xs:grid-col-1 sm:grid-cols-1 sm:gap-16 md:grid-cols-2 md:gap-16 lg:grid-cols-2 lg:gap-16">
         {cards &&
-          cards.map((card) => (
-            <Link to={`/product/${card._id}`} style={{ cursor: "pointer" }}>
+          cards.map((card, index) => (
+            <Link
+              key={index}
+              to={`/product/${card._id}`}
+              style={{ cursor: "pointer" }}
+            >
               <Product
+                key={index}
                 title={card.title}
                 snippet={card.snippet}
                 description={card.description}

@@ -89,38 +89,53 @@ const placeOrder = async (req: Request, res: Response, next: NextFunction) => {
   if (!prod) {
     res.status(404).json({ message: "No such product exists" });
     return;
+  } else if (prod.quantity < quantity) {
+    res.status(400).json({ message: "not enough quantity" });
+    return;
   }
-  let flag: boolean = false;
-  Order.findOne({ consumerId: consumerId }).then((order) => {
-    if (order) {
-      if (order.products.length != 0) {
-        for (let i = 0; i < order.products.length; i++) {
-          if (order.products[i].product._id === prodId) {
-            order.products[i].quantity += quantity;
-            flag = true;
-            prod!.quantity -= quantity
-            prod.save()
-            res.status(200).json({ message: "New order added" });
-          }
-        }
-      }
-      if (flag === false) {
-        order.products.push({ product: prod, quantity: quantity });
-        prod!.quantity -= quantity
-        prod.save()
-        res.status(200).json({ message: "New order added" });
-      }
+  Order.create({
+    consumerId: consumerId,
+    products: [
+      {
+        product: {
+          title: prod.title,
+          snippet: prod.snippet,
+          price: prod.price,
+          _id: prod._id,
+        },
+        quantity: quantity,
+      },
+    ],
+  }).then(() => {
+    prod!.quantity -= quantity;
+    prod.save();
+    res.status(200).json({ message: "New order added" });
+  });
+};
+
+const getOrders = async (req: Request, res: Response, next: NextFunction) => {
+  const { consumerId } = req.params;
+  Order.find({ consumerId: consumerId }).then((orders) => {
+    if (orders.length > 0) {
+      res.status(200).json({ message: "Orders found", orders: orders });
     } else {
-      Order.create({
-        consumerId: consumerId,
-        products: [{ product: prod, quantity: quantity }],
-      }).then(() => {
-        prod!.quantity -= quantity
-        prod.save()
-        res.status(200).json({ message: "New order added" });
-      });
+      res.status(404).json({ message: "no orders found" });
     }
   });
 };
 
-export { sendDataByCategory, sendDataById, placeOrder, login, signup };
+const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
+  const { orderId } = req.params;
+  Order.deleteOne({ _id: orderId }).then(() => {
+    res.status(200);
+  });
+};
+export {
+  sendDataByCategory,
+  sendDataById,
+  placeOrder,
+  login,
+  signup,
+  getOrders,
+  cancelOrder,
+};
