@@ -11,6 +11,7 @@ import { themeEnum } from "../components/store/themeStore";
 import axios from "../../api/axios";
 import useAuthStore from "../components/store/authStore";
 import { useNavigate } from "react-router-dom";
+import { BsPlusCircleFill } from "react-icons/bs";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -195,28 +196,30 @@ export default function AddProd() {
       category
     ) {
       try {
-        await axios.post(
-          `/seller/add-product`,
-          {
-            title: title,
-            snippet: snippet,
-            description: description,
-            price: price,
-            quantity: quantity,
-            coverImage: JSON.parse(coverImage),
-            imageArray: imageArray,
-            category: category,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
+        await axios
+          .post(
+            `/seller/add-product`,
+            {
+              title: title,
+              snippet: snippet,
+              description: description,
+              price: price,
+              quantity: quantity,
+              coverImage: JSON.parse(coverImage),
+              imageArray: imageArray,
+              category: category,
             },
-          }
-        ).then(response => {
-          if(response.status === 200){
-            navigate(`/`)
-          }
-        });
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            if (response.status === 200) {
+              navigate(`/`);
+            }
+          });
       } catch (err) {
         console.log("Data not uploaded, err: " + err);
       }
@@ -485,7 +488,8 @@ export default function AddProd() {
             type="submit"
             onClick={handleSubmit}
           >
-            submit
+            <BsPlusCircleFill />
+            Add
           </button>
         </div>
       </div>

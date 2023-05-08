@@ -6,6 +6,7 @@ import { prodType } from "../../../types";
 import useThemeStore from "../../components/store/themeStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { Triangle } from "react-loader-spinner";
+import { BsCartPlus } from "react-icons/bs";
 
 export default function Details() {
   const theme = useThemeStore((state) => state.theme);
@@ -42,6 +43,7 @@ export default function Details() {
       <h1>{prod.title}</h1>
       <p>{prod.description}</p>
       <p>{prod.price}</p>
+      <div className="flex gap-8">
       <button
         data-theme={stateTheme}
         className={
@@ -53,6 +55,13 @@ export default function Details() {
       >
         {prod.quantity !== 0 ? "Buy Now" : "Out Of Stock"}
       </button>
+      <button
+        date-theme={stateTheme}
+        className="btn btn-circle btn-outline btn-accent btn-lg"
+      >
+        <BsCartPlus />
+      </button>
+      </div>
     </main>
   ) : (
     <main className={styles.main}>

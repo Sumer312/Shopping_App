@@ -2,6 +2,17 @@ import { Link } from "react-router-dom";
 import useStore, { themeEnum } from "./store/themeStore";
 import { useEffect, useState } from "react";
 import useAuthStore, { authEnum } from "./store/authStore";
+import {
+  BsFillBrightnessHighFill,
+  BsFillMoonStarsFill,
+  BsFillPersonFill,
+  BsDatabaseFill,
+  BsPlusCircleFill,
+  BsCartFill,
+} from "react-icons/bs";
+
+import { CiLogout, CiCreditCard1, CiLogin } from "react-icons/ci";
+import { RiLoginBoxFill } from "react-icons/ri";
 
 export default function Navbar() {
   const theme = useStore((state) => state.theme);
@@ -32,33 +43,25 @@ export default function Navbar() {
           <div className="flex-none">
             <ul className="menu menu-horizontal px-1 mr-3">
               <li tabIndex={0}>
-                <Link to="/add-product">Add Product</Link>
+                <Link to="/add-product">
+                  <BsPlusCircleFill />
+                  Add Product
+                </Link>
               </li>
               <li tabIndex={0}>
-                <img
-                  src={
-                    stateTheme === themeEnum.LIGHT
-                      ? "https://img.icons8.com/ios-glyphs/256/bright-moon--v2.png"
-                      : "https://img.icons8.com/material-rounded/96/FFFFFF/sun--v1.png"
-                  }
-                  alt="Theme"
-                  width="60"
-                  height="40"
-                  onClick={changeTheme}
-                />
+                <a onClick={changeTheme}>
+                  {stateTheme === themeEnum.DARK ? (
+                    <BsFillBrightnessHighFill size="1.5rem" />
+                  ) : (
+                    <BsFillMoonStarsFill size="1.1rem" />
+                  )}
+                </a>
               </li>
             </ul>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-8 rounded-full">
-                  <img
-                    className={
-                      stateTheme === themeEnum.DARK
-                        ? "bg-neutral-content"
-                        : "bg-accent"
-                    }
-                    src="https://img.icons8.com/?size=512&id=pETkiIKt6qBf&format=png"
-                  />
+                  <BsFillPersonFill size="2rem" />
                 </div>
               </label>
               <ul
@@ -66,10 +69,16 @@ export default function Navbar() {
                 className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <Link to="/my-products">My Products</Link>
+                  <Link to="/my-products">
+                    <BsDatabaseFill />
+                    My Products
+                  </Link>
                 </li>
                 <li onClick={() => changeRoleToGuest()}>
-                  <a>Logout</a>
+                  <a>
+                    <CiLogout />
+                    Logout
+                  </a>
                 </li>
               </ul>
             </div>
@@ -207,30 +216,19 @@ export default function Navbar() {
                 </ul>
               </li>
               <li tabIndex={0}>
-                <img
-                  src={
-                    stateTheme === themeEnum.LIGHT
-                      ? "https://img.icons8.com/ios-glyphs/256/bright-moon--v2.png"
-                      : "https://img.icons8.com/material-rounded/96/FFFFFF/sun--v1.png"
-                  }
-                  alt="Theme"
-                  width="60"
-                  height="40"
-                  onClick={changeTheme}
-                />
+                <a onClick={changeTheme}>
+                  {stateTheme === themeEnum.DARK ? (
+                    <BsFillBrightnessHighFill size="1.5rem" />
+                  ) : (
+                    <BsFillMoonStarsFill size="1.1rem" />
+                  )}
+                </a>
               </li>
             </ul>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-8 rounded-full">
-                  <img
-                    className={
-                      stateTheme === themeEnum.DARK
-                        ? "bg-neutral-content"
-                        : "bg-accent"
-                    }
-                    src="https://img.icons8.com/?size=512&id=pETkiIKt6qBf&format=png"
-                  />
+                  <BsFillPersonFill size="2rem" />
                 </div>
               </label>
               <ul
@@ -238,10 +236,22 @@ export default function Navbar() {
                 className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <Link to="/my-orders">My Orders</Link>
+                  <Link to="/my-orders">
+                    <CiCreditCard1 />
+                    My Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/my-cart">
+                    <BsCartFill />
+                    My Cart
+                  </Link>
                 </li>
                 <li onClick={() => changeRoleToGuest()}>
-                  <a>Logout</a>
+                  <a>
+                    <CiLogout />
+                    Logout
+                  </a>
                 </li>
               </ul>
             </div>
@@ -371,7 +381,14 @@ export default function Navbar() {
                     <Link to="/unisex/tops">Tops</Link>
                   </li>
                   <li>
-                    <Link to="/unisex/hoodies">Hoodies</Link>
+                    <Link to="/unisex/hoodies">Hoodies</Link>{" "}
+                    <a onClick={changeTheme}>
+                      {stateTheme === themeEnum.DARK ? (
+                        <BsFillBrightnessHighFill size="1.5rem" />
+                      ) : (
+                        <BsFillMoonStarsFill size="1.1rem" />
+                      )}
+                    </a>
                   </li>
                   <li>
                     <Link to="/unisex/bottoms">Bottoms</Link>
@@ -379,30 +396,19 @@ export default function Navbar() {
                 </ul>
               </li>
               <li tabIndex={0}>
-                <img
-                  src={
-                    stateTheme === themeEnum.LIGHT
-                      ? "https://img.icons8.com/ios-glyphs/256/bright-moon--v2.png"
-                      : "https://img.icons8.com/material-rounded/96/FFFFFF/sun--v1.png"
-                  }
-                  alt="Theme"
-                  width="60"
-                  height="40"
-                  onClick={changeTheme}
-                />
+                <a onClick={changeTheme}>
+                  {stateTheme === themeEnum.DARK ? (
+                    <BsFillBrightnessHighFill size="1.5rem" />
+                  ) : (
+                    <BsFillMoonStarsFill size="1.1rem" />
+                  )}
+                </a>
               </li>
             </ul>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-8 rounded-full">
-                  <img
-                    className={
-                      stateTheme === themeEnum.DARK
-                        ? "bg-neutral-content"
-                        : "bg-primary"
-                    }
-                    src="https://img.icons8.com/?size=512&id=pETkiIKt6qBf&format=png"
-                  />
+                  <RiLoginBoxFill size="2rem" />
                 </div>
               </label>
               <ul
@@ -410,10 +416,14 @@ export default function Navbar() {
                 className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <a>My Orders</a>
+                  <Link to="/auth/seller/login">
+                    <CiLogin /> Seller
+                  </Link>
                 </li>
-                <li onClick={() => changeRoleToGuest()}>
-                  <a>Logout</a>
+                <li>
+                  <Link to="/auth/consumer/login">
+                    <CiLogin /> Consumer
+                  </Link>
                 </li>
               </ul>
             </div>

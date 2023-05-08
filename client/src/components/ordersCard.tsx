@@ -1,6 +1,7 @@
 import axios from "../../api/axios";
 import { orderCardType } from "../../types";
 import { MouseEvent } from "react";
+import { BsXCircleFill } from "react-icons/bs";
 
 export default function OrdersCard(props: orderCardType) {
   const handleDelete = async (event: MouseEvent<HTMLElement>) => {
@@ -18,10 +19,10 @@ export default function OrdersCard(props: orderCardType) {
             className="btn btn-sm btn-block"
             onClick={(event) => {
               handleDelete(event);
-              window.location.reload()
+              window.location.reload();
             }}
           >
-            Cancel
+            <BsXCircleFill /> Cancel
           </button>
         </div>
       </div>

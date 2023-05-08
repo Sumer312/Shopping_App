@@ -94,6 +94,12 @@ function App() {
               role === authEnum.CONSUMER ? <MyOrders /> : <ConsumerLogin />
             }
           />
+           <Route
+            path="/my-cart"
+            element={
+              role === authEnum.CONSUMER ? <MyOrders /> : <ConsumerLogin />
+            }
+          />
           <Route path="/men/hoodies" element={<MenHoodies />} />
           <Route path="/men/tops" element={<MenTops />} />
           <Route path="/men/bottoms" element={<MenBottoms />} />

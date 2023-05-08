@@ -11,6 +11,7 @@ import { themeEnum } from "../components/store/themeStore";
 import axios from "../../api/axios";
 import useAuthStore from "../components/store/authStore";
 import { useNavigate, useParams } from "react-router-dom";
+import { AiOutlineSync, AiFillDelete } from "react-icons/ai";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -351,6 +352,7 @@ export default function EditProd() {
             type="submit"
             onClick={handleUpdate}
           >
+            <AiOutlineSync />
             Update Product
           </button>
           <br />
@@ -361,6 +363,7 @@ export default function EditProd() {
             type="submit"
             onClick={handleDelete}
           >
+            <AiFillDelete />
             Delete Product
           </button>
           <br />

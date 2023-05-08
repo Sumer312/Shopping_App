@@ -27,33 +27,45 @@ const sendDataById = async (
 };
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
-  const { name, email, password } = req.body;
-  await Consumer.findOne({ name: name, email: email, password: password }).then(
-    async (consumer) => {
-      if (!consumer) {
-        res
-          .status(404)
-          .json({ message: "No account with these credentials found" });
-      } else {
-        try {
-          const accessToken = await createAccessToken(consumer._id, "Consumer");
-          res.status(200).json({
-            message: "token sent",
-            role: "consumer",
-            token: accessToken,
-            id: consumer._id,
-          });
-        } catch (err) {
-          console.log(err);
-          res.status(404).json(err);
-        }
+  const { email, password } = req.body;
+  await Consumer.findOne({ email: email }).then((consumer) => {
+    if (!consumer) {
+      res
+        .status(404)
+        .json({ message: "No account with these credentials found" });
+    } else {
+      try {
+        bcrypt.compare(password, consumer.password, async (err, data) => {
+          if (err) {
+            throw err;
+          } else if (data) {
+            const accessToken = await createAccessToken(
+              consumer._id,
+              "Consumer"
+            );
+            res.status(200).json({
+              message: "token sent",
+              role: "consumer",
+              token: accessToken,
+              id: consumer._id,
+            });
+          }
+        });
+      } catch (err) {
+        console.log(err);
+        res.status(404).json(err);
       }
     }
-  );
+  });
 };
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   const { name, email, password } = req.body;
+  const prevEmail = await Consumer.findOne({ email: email });
+  if (prevEmail) {
+    res.status(400).json({ message: "Email already taken" });
+    return;
+  }
   await Consumer.findOne({ name: name, email: email, password: password }).then(
     (consumer) => {
       if (consumer) {
@@ -133,7 +145,7 @@ const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
           Product.findById(order.products[i].product._id).then((product) => {
             if (product) {
               product.quantity += order.products[i].quantity;
-              product.save()
+              product.save();
             } else {
               console.log("no product found");
             }

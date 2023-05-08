@@ -9,6 +9,11 @@ import "dotenv/config";
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   const { name, email, password } = req.body;
+  const prevEmail = await Seller.findOne({ email: email });
+  if (prevEmail) {
+    res.status(400).json({ message: "Email already in use" });
+    return;
+  }
   await Seller.findOne({ name: name, email: email, password: password }).then(
     (seller) => {
       if (seller) {
