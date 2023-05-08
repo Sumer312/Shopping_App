@@ -126,9 +126,31 @@ const getOrders = async (req: Request, res: Response, next: NextFunction) => {
 
 const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
   const { orderId } = req.params;
-  Order.deleteOne({ _id: orderId }).then(() => {
-    res.status(200);
-  });
+  Order.findById(orderId)
+    .then((order) => {
+      if (order) {
+        for (let i = 0; i < order.products.length; i++) {
+          Product.findById(order.products[i].product._id).then((product) => {
+            if (product) {
+              product.quantity += order.products[i].quantity;
+              product.save()
+            } else {
+              console.log("no product found");
+            }
+          });
+        }
+      } else {
+        res.status(404).json({ message: "No such order" });
+      }
+    })
+    .then(() => {
+      Order.deleteOne({ _id: orderId }).then(() => {
+        res.status(200);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 export {
   sendDataByCategory,

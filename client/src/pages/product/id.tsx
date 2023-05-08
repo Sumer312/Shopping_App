@@ -5,6 +5,7 @@ import Carousel from "../../components/carousel";
 import { prodType } from "../../../types";
 import useThemeStore from "../../components/store/themeStore";
 import { useNavigate, useParams } from "react-router-dom";
+import { Triangle } from "react-loader-spinner";
 
 export default function Details() {
   const theme = useThemeStore((state) => state.theme);
@@ -22,7 +23,7 @@ export default function Details() {
       method: "get",
       url: `http://localhost:5000/consumer/getById/${params.prodId}`,
     }).then((result) => {
-      setProd(JSON.parse(result.data));
+      setTimeout(() => setProd(JSON.parse(result.data)), 500);
     });
   }, [params.prodId]);
 
@@ -35,23 +36,34 @@ export default function Details() {
     return combinedArray;
   }
 
-  return (
+  return prod ? (
     <main className={styles.main}>
-      {prod ? (
-        <Carousel key={prod.title} imageArray={CarouselReady(prod)} />
-      ) : (
-        ""
-      )}
-      <h1>{prod?.title}</h1>
-      <p>{prod?.description}</p>
-      <p>{prod?.price}</p>
+      {<Carousel key={prod.title} imageArray={CarouselReady(prod)} />}
+      <h1>{prod.title}</h1>
+      <p>{prod.description}</p>
+      <p>{prod.price}</p>
       <button
         data-theme={stateTheme}
-        className="btn btn-lg btn-wide btn-outline btn-accent "
+        className={
+          prod.quantity !== 0
+            ? "btn btn-lg btn-wide btn-outline btn-neutral"
+            : "btn btn-disabled btn-wide btn-lg"
+        }
         onClick={() => navigate(`/buy-product/${params.prodId}`)}
       >
-        Buy Now
+        {prod.quantity !== 0 ? "Buy Now" : "Out Of Stock"}
       </button>
+    </main>
+  ) : (
+    <main className={styles.main}>
+      <Triangle
+        height="200"
+        width="200"
+        color="hsl(var(--a))"
+        ariaLabel="triangle-loading"
+        wrapperStyle={{}}
+        visible={true}
+      />
     </main>
   );
 }

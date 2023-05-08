@@ -346,7 +346,7 @@ export default function EditProd() {
           <br />
           <br />
           <button
-            className="btn btn-lg btn-outline btn-accent xs:btn-wide sm:btn-wide"
+            className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide"
             data-theme={stateTheme}
             type="submit"
             onClick={handleUpdate}

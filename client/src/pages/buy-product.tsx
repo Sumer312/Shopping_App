@@ -5,8 +5,8 @@ import useAuthStore from "../components/store/authStore";
 import { prodType } from "../../types";
 import useThemeStore from "../components/store/themeStore";
 import { useNavigate } from "react-router-dom";
+import { Triangle } from "react-loader-spinner";
 import styles from "../styles/Home.module.css";
-
 
 export default function BuyProd() {
   const { prodId } = useParams();
@@ -21,10 +21,11 @@ export default function BuyProd() {
   useEffect(() => {
     setStateTheme(theme);
   }, [theme]);
+
   useEffect(() => {
     axios.get(`consumer/getById/${prodId}`).then((res) => {
       console.log(JSON.parse(res.data));
-      setProd(JSON.parse(res.data));
+      setTimeout(() => setProd(JSON.parse(res.data)), 500);
     });
   }, [prodId]);
 
@@ -41,28 +42,46 @@ export default function BuyProd() {
     }
   };
 
-  return (
+  return prod ? (
+    prod.quantity !== 0 ? (
+      <main className={styles.main}>
+        <h1>{prod.title}</h1>
+        <h6>{prod.snippet}</h6>
+        <label htmlFor="quantity">Quantity</label>
+        <input
+          type="number"
+          className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
+          id="quantity"
+          min="1"
+          max={prod.quantity}
+          value={quantity}
+          onChange={(event) => setQuantity(parseInt(event.target.value))}
+          data-theme={stateTheme}
+        />
+        <button
+          className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide"
+          data-theme={stateTheme}
+          type="submit"
+          onClick={placeOrder}
+        >
+          Place Order
+        </button>
+      </main>
+    ) : (
+      <main className={styles.main}>
+        <h1>Can't place order because product is out of stock</h1>
+      </main>
+    )
+  ) : (
     <main className={styles.main}>
-      <h1>{prod && prod.title}</h1>
-      <label htmlFor="quantity">Quantity</label>
-      <input
-        type="number"
-        className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
-        id="quantity"
-        min="1"
-        max={prod?.quantity}
-        value={quantity}
-        onChange={(event) => setQuantity(parseInt(event.target.value))}
-        data-theme={stateTheme}
+      <Triangle
+        height="200"
+        width="200"
+        color="hsl(var(--a))"
+        ariaLabel="triangle-loading"
+        wrapperStyle={{}}
+        visible={true}
       />
-      <button
-        className="btn btn-lg btn-outline btn-accent xs:btn-wide sm:btn-wide"
-        data-theme={stateTheme}
-        type="submit"
-        onClick={placeOrder}
-      >
-        Place Order
-      </button>
     </main>
   );
 }
