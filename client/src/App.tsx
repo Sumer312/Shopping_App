@@ -25,6 +25,7 @@ import EditProd from "./pages/edit-product.tsx";
 import MyProds from "./pages/my-products.tsx";
 import BuyProd from "./pages/buy-product.tsx";
 import MyOrders from "./pages/my-orders.tsx";
+import MyCart from "./pages/my-cart.tsx";
 import "./styles/globals.css";
 
 function App() {
@@ -88,17 +89,15 @@ function App() {
               role === authEnum.CONSUMER ? <BuyProd /> : <ConsumerLogin />
             }
           />
-           <Route
+          <Route
             path="/my-orders"
             element={
               role === authEnum.CONSUMER ? <MyOrders /> : <ConsumerLogin />
             }
           />
-           <Route
+          <Route
             path="/my-cart"
-            element={
-              role === authEnum.CONSUMER ? <MyOrders /> : <ConsumerLogin />
-            }
+            element={role === authEnum.CONSUMER ? <MyCart /> : <MyCart />}
           />
           <Route path="/men/hoodies" element={<MenHoodies />} />
           <Route path="/men/tops" element={<MenTops />} />

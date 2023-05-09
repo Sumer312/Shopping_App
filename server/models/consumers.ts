@@ -16,16 +16,6 @@ const ConsumerSchema = new Schema({
   },
   resetToken: String,
   resetTokenExpirationDate: Date,
-  rating: {
-    items: [
-      {
-        productID: {
-          type: Schema.Types.ObjectId,
-          ref: "Product",
-        },
-      },
-    ],
-  },
   cart: {
     items: [
       {
@@ -49,14 +39,48 @@ ConsumerSchema.methods.addToCart = function (product: any): void {
   });
   let newQuantity: number = 1;
   const updatedCartItems: Array<cartType> = [...this.cart.items];
-  if (productIndex >= 0) {
-    newQuantity = this.cart.items[productIndex].quantity + 1;
-    updatedCartItems[productIndex].quantity = newQuantity;
-  } else {
+  if (productIndex === -1) {
     updatedCartItems.push({
       productID: product._id,
       quantity: newQuantity,
     });
+  }
+  const updatedCart = {
+    items: updatedCartItems,
+  };
+  this.cart = updatedCart;
+  return this.save();
+};
+
+ConsumerSchema.methods.incrementProductInCart = function (product: any): void {
+  const productIndex: number = this.cart.items.findIndex((cp: cartType) => {
+    return cp.productID == product._id;
+  });
+  let newQuantity: number = 1;
+  const updatedCartItems: Array<cartType> = [...this.cart.items];
+  if (productIndex >= 0) {
+    newQuantity = this.cart.items[productIndex].quantity + 1;
+    updatedCartItems[productIndex].quantity = newQuantity;
+  }
+  const updatedCart = {
+    items: updatedCartItems,
+  };
+  this.cart = updatedCart;
+  return this.save();
+};
+
+ConsumerSchema.methods.decrementProductInCart = function (product: any): void {
+  const productIndex: number = this.cart.items.findIndex((cp: cartType) => {
+    return cp.productID == product._id;
+  });
+  let newQuantity: number = 1;
+  const updatedCartItems: Array<cartType> = [...this.cart.items];
+  if (productIndex >= 0) {
+    newQuantity =
+      this.cart.items[productIndex].quantity >= 1
+        ? this.cart.items[productIndex].quantity - 1
+        : 0;
+    updatedCartItems[productIndex].quantity = newQuantity;
   }
   const updatedCart = {
     items: updatedCartItems,

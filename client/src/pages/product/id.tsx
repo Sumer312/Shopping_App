@@ -44,23 +44,27 @@ export default function Details() {
       <p>{prod.description}</p>
       <p>{prod.price}</p>
       <div className="flex gap-8">
-      <button
-        data-theme={stateTheme}
-        className={
-          prod.quantity !== 0
-            ? "btn btn-lg btn-wide btn-outline btn-neutral"
-            : "btn btn-disabled btn-wide btn-lg"
-        }
-        onClick={() => navigate(`/buy-product/${params.prodId}`)}
-      >
-        {prod.quantity !== 0 ? "Buy Now" : "Out Of Stock"}
-      </button>
-      <button
-        date-theme={stateTheme}
-        className="btn btn-circle btn-outline btn-accent btn-lg"
-      >
-        <BsCartPlus />
-      </button>
+        <button
+          data-theme={stateTheme}
+          className={
+            prod.quantity !== 0
+              ? "btn btn-lg btn-wide btn-outline btn-neutral"
+              : "btn btn-disabled btn-wide btn-lg"
+          }
+          onClick={() => navigate(`/buy-product/${params.prodId}`)}
+        >
+          {prod.quantity !== 0 ? "Buy Now" : "Out Of Stock"}
+        </button>
+        <button
+          date-theme={stateTheme}
+          className={
+            prod.quantity !== 0
+              ? "btn btn-circle btn-outline btn-accent btn-lg"
+              : "btn btn-disabled btn-circle btn-lg"
+          }
+        >
+          <BsCartPlus />
+        </button>
       </div>
     </main>
   ) : (

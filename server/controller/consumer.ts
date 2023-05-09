@@ -164,6 +164,35 @@ const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
       console.log(err);
     });
 };
+
+const addToCart = async (req: Request, res: Response, next: NextFunction) => {
+  const { prodId, consumerId } = req.body;
+  Consumer.findById(consumerId).then((consumer) => {
+    if (consumer) {
+      Product.findById(prodId).then((product) => {
+        consumer.addToCart(product);
+      });
+    }
+  });
+};
+
+const removeToCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { prodId, consumerId } = req.body;
+  Consumer.findById(consumerId).then((consumer) => {
+    if (consumer) {
+      Product.findById(prodId).then((product) => {
+        if (product) {
+          consumer.removeFromCart(prodId);
+        }
+      });
+    }
+  });
+};
+
 export {
   sendDataByCategory,
   sendDataById,

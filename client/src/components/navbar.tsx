@@ -10,6 +10,7 @@ import {
   BsPlusCircleFill,
   BsCartFill,
 } from "react-icons/bs";
+import { GiRobinHoodHat } from "react-icons/gi";
 
 import { CiLogout, CiCreditCard1, CiLogin } from "react-icons/ci";
 import { RiLoginBoxFill } from "react-icons/ri";
@@ -36,8 +37,11 @@ export default function Navbar() {
       <>
         <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-20">
           <div className="flex-1">
-            <Link className="btn btn-ghost normal-case text-xl" to="/">
-              Clothing Website
+            <Link
+              className="btn btn-ghost btn-lg text-xl hover:bg-accent"
+              to="/"
+            >
+              <GiRobinHoodHat size="4rem" />
             </Link>
           </div>
           <div className="flex-none">
@@ -103,8 +107,8 @@ export default function Navbar() {
             </button>
           </div>
           <div className="flex-1">
-            <Link className="btn btn-ghost normal-case text-xl" to="/">
-              Clothing Website
+            <Link className="btn btn-ghost btn-lg text-xl" to="/">
+              <GiRobinHoodHat size="4rem" />
             </Link>
           </div>
           <div className="flex-none">
@@ -134,8 +138,11 @@ export default function Navbar() {
       <>
         <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-20">
           <div className="flex-1">
-            <Link className="btn btn-ghost normal-case text-xl" to="/">
-              Clothing Website
+            <Link
+              className="btn btn-ghost btn-lg text-xl hover:bg-accent"
+              to="/"
+            >
+              <GiRobinHoodHat size="4rem" />
             </Link>
           </div>
           <div className="flex-none">
@@ -276,8 +283,8 @@ export default function Navbar() {
             </button>
           </div>
           <div className="flex-1">
-            <Link className="btn btn-ghost normal-case text-xl" to="/">
-              Clothing Website
+            <Link className="btn btn-ghost btn-lg text-xl" to="/">
+              <GiRobinHoodHat size="4rem" />
             </Link>
           </div>
           <div className="flex-none">
@@ -307,8 +314,11 @@ export default function Navbar() {
       <>
         <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-20">
           <div className="flex-1">
-            <Link className="btn btn-ghost normal-case text-xl" to="/">
-              Clothing Website
+            <Link
+              className="btn btn-ghost btn-lg text-xl hover:bg-accent"
+              to="/"
+            >
+              <GiRobinHoodHat size="4rem" />
             </Link>
           </div>
           <div className="flex-none">
@@ -448,8 +458,8 @@ export default function Navbar() {
             </button>
           </div>
           <div className="flex-1">
-            <Link className="btn btn-ghost normal-case text-xl" to="/">
-              Clothing Website
+            <Link className="btn btn-ghost btn-lg text-xl" to="/">
+              <GiRobinHoodHat size="4rem" />
             </Link>
           </div>
           <div className="flex-none">

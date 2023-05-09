@@ -1,6 +1,4 @@
-import { BsFillBasketFill, BsGithub } from "react-icons/bs";
-import { DiNodejsSmall, DiReact, DiMongodb } from "react-icons/di";
-import { GiBearFace } from "react-icons/gi";
+import { GiBearFace, GiRobinHoodHat } from "react-icons/gi";
 import {
   SiTailwindcss,
   SiTypescript,
@@ -8,81 +6,101 @@ import {
   SiDocker,
   SiVite,
   SiPostman,
+  SiDaisyui,
+  SiJsonwebtokens,
+  SiTsnode,
+  SiNodedotjs,
+  SiReact,
+  SiCss3,
+  SiMongodb,
+  SiGithub,
 } from "react-icons/si";
 import { FaGit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="footer p-10 bg-base-200 text-base-content">
+    <footer className="footer p-12 bg-base-200 text-base-content">
       <div>
-        <BsFillBasketFill size="3rem" />
+        <GiRobinHoodHat size="4rem" />
         <p>
           Clothing Web-App
           <br />
           Personal project
         </p>
         <br />
-        <Link to="https://github.com/Sumer312/ClothingWebApp">
-          <BsGithub size="4rem" />
+        <Link
+          className="hover:link-accent"
+          to="https://github.com/Sumer312/ClothingWebApp"
+        >
+          <SiGithub size="4rem" />
         </Link>
       </div>
-      <ul>
+      <div>
         <span className="footer-title">Front-End</span>
-        <li className="link link-hover">
-          <DiReact size="1.5rem" /> React
-        </li>
-        <li className="link link-hover">
+        <a className="flex link link-hover gap-2">
+          <SiReact size="1.5rem" />
+          <SiTypescript size="1.5rem" /> React + TS
+        </a>
+        <a className="flex link link-hover gap-2">
           <GiBearFace size="1.5rem" />
           Zuntand
-        </li>
-        <li className="link link-hover">
+        </a>
+        <a className="flex link link-hover gap-2">
           <SiTailwindcss size="1.5rem" />
           Tailwind
-        </li>
-      </ul>
+        </a>
+        <a className="flex link link-hover gap-2">
+          <SiCss3 size="1.5rem" />
+          CSS
+        </a>
+        <a className="flex link link-hover gap-2">
+          <SiDaisyui size="1.5rem" />
+          DaisyUI
+        </a>
+      </div>
       <div>
         <span className="footer-title">Back-End</span>
-        <a className="link link-hover">
-          <DiNodejsSmall size="1.5rem" />
-          Node JS
+        <a className="flex link link-hover gap-2">
+          <SiTsnode size="1.5rem" />
+          <SiNodedotjs size="1.5rem" />
+          NodeJS + TS
         </a>
-        <a className="link link-hover">
+        <a className="flex link link-hover gap-2">
           <SiExpress size="1.5rem" />
           Express
         </a>
-        <a className="link link-hover">
-          <SiTypescript size="1.5rem" />
-          TypeScript
+        <a className="flex link link-hover gap-2">
+          <SiJsonwebtokens size="1.5rem" />
+          JWT
         </a>
-        <a className="link link-hover">
-          {" "}
-          <DiMongodb size="1.5rem" />
-          Mongoose(ODM)
+        <a className="flex link link-hover gap-2">
+          <SiMongodb size="1.5rem" />
+          Mongoose ODM
         </a>
       </div>
       <div>
         <span className="footer-title">Database</span>
-        <a className="link link-hover">
-          <DiMongodb size="1.5rem" />
+        <a className="flex link link-hover gap-2">
+          <SiMongodb size="1.5rem" />
           MongoDB
         </a>
       </div>
       <div>
         <span className="footer-title">Tools</span>
-        <a className="link link-hover">
+        <a className="flex link link-hover gap-2">
           <SiDocker size="1.5rem" />
           Docker
         </a>
-        <a className="link link-hover">
+        <a className="flex link link-hover gap-2">
           <SiVite size="1.5rem" />
           Vite
         </a>
-        <a className="link link-hover">
+        <a className="flex link link-hover gap-2">
           <SiPostman size="1.5rem" />
           Postman
         </a>
-        <a className="link link-hover">
+        <a className="flex link link-hover gap-2">
           <FaGit size="1.5rem" />
           Git
         </a>

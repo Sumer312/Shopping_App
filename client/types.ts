@@ -18,10 +18,18 @@ export interface orderCardType {
   title: string;
   snippet: string;
   quantity: number;
-  id: string
+  id: string;
 }
 export interface imageArray {
   imageArray: Array<string>;
+}
+
+export interface cartCardType {
+  title: string;
+  snippet: string;
+  quantity: number;
+  maxQuantity: number;
+  id: string;
 }
 
 export interface cardType {
