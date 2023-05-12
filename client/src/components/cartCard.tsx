@@ -95,7 +95,7 @@ export default function CartCard(props: cartCardType) {
             <p className=" text-lg px-3">{quantity}</p>
             <button
               className={
-                quantity !== props.maxQuantity
+                quantity < props.maxQuantity
                   ? "btn btn-sm"
                   : "btn btn-disabled btn-sm"
               }
@@ -104,6 +104,11 @@ export default function CartCard(props: cartCardType) {
               <TiPlus />
             </button>
           </div>
+          {quantity > props.maxQuantity ? (
+            <p>Desired quantity not in stock</p>
+          ) : (
+            ""
+          )}
           {quantity > 1 && (
             <button
               className="btn btn-sm btn-block"

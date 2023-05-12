@@ -38,7 +38,6 @@ export default function WomenBottoms() {
     </main>
   ) : (
     <main className={styles.main}>
-      {" "}
       <Triangle
         height="200"
         width="200"

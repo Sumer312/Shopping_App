@@ -41,10 +41,10 @@ export default function Navbar() {
   const SellerNavbar = () => {
     return (
       <>
-        <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-20">
+        <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <div className="flex-1">
             <Link
-              className="btn btn-ghost btn-lg text-xl hover:bg-accent"
+              className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
               <GiRobinHoodHat size="4rem" />
@@ -147,7 +147,7 @@ export default function Navbar() {
   const ConsumerNavbar = () => {
     return (
       <>
-        <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-20">
+        <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <div className="flex-1">
             <Link
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
@@ -314,7 +314,7 @@ export default function Navbar() {
         <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-lg bg-opacity-40">
           <div className="flex-1">
             <Link
-              className="btn btn-ghost btn-lg text-xl hover:bg-accent"
+              className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
               <GiRobinHoodHat size="4rem" />

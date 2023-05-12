@@ -41,7 +41,7 @@ function App() {
       data-theme={stateTheme}
       className={
         stateTheme === themeEnum.LIGHT
-          ? "bg-white  text-secondary-content"
+          ? "bg-white text-secondary-content"
           : "bg-black  text-neutral-content"
       }
     >

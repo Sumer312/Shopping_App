@@ -38,7 +38,6 @@ export default function MenTops() {
     </main>
   ) : (
     <main className={styles.main}>
-      {" "}
       <Triangle
         height="200"
         width="200"

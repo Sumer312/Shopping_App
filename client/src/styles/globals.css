@@ -2,18 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-body::-webkit-scrollbar {
+div.bg-black::-webkit-scrollbar {
   width: 10px;      
   background: #000;         /* width of the entire scrollbar */
 }
 
-body::-webkit-scrollbar-thumb {
+div.bg-black::-webkit-scrollbar-thumb {
   background-color: rgb(46, 46, 46);    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
   border: 3px solid transparent;  /* creates padding around scroll thumb */
 }
 
-body::-webkit-scrollbar-thumb:active{
+div.bg-black::-webkit-scrollbar-thumb:active{
+  background-color: rgb(94, 94, 94);
+}
+
+div.bg-white::-webkit-scrollbar {
+  width: 10px;      
+  background: #fff;         /* width of the entire scrollbar */
+}
+
+div.bg-white::-webkit-scrollbar-thumb {
+  background-color: rgb(46, 46, 46);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid transparent;  /* creates padding around scroll thumb */
+}
+
+div.bg-white::-webkit-scrollbar-thumb:active{
   background-color: rgb(94, 94, 94);
 }
 
