@@ -118,16 +118,22 @@ export default function EditProd() {
   );
 
   useEffect(() => {
-    axios.get(`/seller/get-product/${prodId}`).then((res) => {
-      dataFetched.current = res.data.product;
-      dispatch({
-        type: ActionEnum.FETCH,
-        payload: "",
-        FetchPayload: res.data.product,
+    axios
+      .get(`/seller/get-product/${prodId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        dataFetched.current = res.data.product;
+        dispatch({
+          type: ActionEnum.FETCH,
+          payload: "",
+          FetchPayload: res.data.product,
+        });
+        console.log(dataFetched.current);
       });
-      console.log(dataFetched.current);
-    });
-  }, [prodId]);
+  }, [prodId, token]);
 
   async function handleUpdate(event: MouseEvent<HTMLElement>) {
     event.preventDefault();
@@ -206,7 +212,7 @@ export default function EditProd() {
   return (
     <div
       className={
-        "flex overflow-x-scroll scrollbar-hide" +
+        "flex overflow-y-hidden overflow-x-scroll scrollbar-hide" +
         (stateTheme === themeEnum.LIGHT ? "-light" : "")
       }
     >
@@ -289,7 +295,7 @@ export default function EditProd() {
             placeholder="Description"
           ></textarea>
         </div>
-        <div className="grid h-96 flex-grow card place-items-start xs:mt-12 xl:-mt-8 lg:-mt-8 xl:ml-36">
+        <div className="grid h-96 flex-grow card place-items-start mb-24 xs:mt-12 xl:-mt-8 lg:-mt-8 xl:ml-36">
           <label
             className={
               stateTheme === themeEnum.DARK
@@ -344,10 +350,8 @@ export default function EditProd() {
             }}
             min="1"
           />
-          <br />
-          <br />
           <button
-            className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide"
+            className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide gap-2 mt-8"
             data-theme={stateTheme}
             type="submit"
             onClick={handleUpdate}
@@ -355,10 +359,8 @@ export default function EditProd() {
             <AiOutlineSync />
             Update Product
           </button>
-          <br />
-          <br />
           <button
-            className="btn btn-lg btn-outline btn-error xs:btn-wide sm:btn-wide"
+            className="btn btn-lg btn-outline btn-error xs:btn-wide sm:btn-wide gap-2 mt-8"
             data-theme={stateTheme}
             type="submit"
             onClick={handleDelete}

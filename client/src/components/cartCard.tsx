@@ -8,33 +8,60 @@ import useAuthStore from "./store/authStore";
 export default function CartCard(props: cartCardType) {
   const [quantity, setQuantity] = useState<number>(props.quantity);
   const ID = useAuthStore((state) => state.ID);
+  const token = useAuthStore((state) => state.token);
   const handleDelete = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    await axios.post("/consumer/delete-from-cart", {
-      consumerId: ID,
-      prodId: props.id,
-    });
+    await axios.post(
+      "/consumer/delete-from-cart",
+      {
+        consumerId: ID,
+        prodId: props.id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   };
   const incrementer = async (incrementedQuantity: number) => {
     if (incrementedQuantity <= props.maxQuantity) {
-      const res = await axios.post("/consumer/increment-cart", {
-        consumerId: ID,
-        prodId: props.id,
-      });
+      const res = await axios.post(
+        "/consumer/increment-cart",
+        {
+          consumerId: ID,
+          prodId: props.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.status === 200) {
         setQuantity(incrementedQuantity);
+        window.location.reload();
       }
     }
   };
 
   const decrementer = async (decrementedQuantity: number) => {
     if (decrementedQuantity >= 1) {
-      const res = await axios.post("/consumer/decrement-cart", {
-        consumerId: ID,
-        prodId: props.id,
-      });
+      const res = await axios.post(
+        "/consumer/decrement-cart",
+        {
+          consumerId: ID,
+          prodId: props.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.status === 200) {
         setQuantity(decrementedQuantity);
+        window.location.reload();
       }
     }
   };
@@ -67,7 +94,11 @@ export default function CartCard(props: cartCardType) {
 
             <p className=" text-lg px-3">{quantity}</p>
             <button
-              className="btn btn-sm"
+              className={
+                quantity !== props.maxQuantity
+                  ? "btn btn-sm"
+                  : "btn btn-disabled btn-sm"
+              }
               onClick={() => incrementer(quantity + 1)}
             >
               <TiPlus />

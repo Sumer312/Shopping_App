@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { cartType, consumerType } from "../types";
 
 const ConsumerSchema = new Schema({
@@ -19,7 +19,7 @@ const ConsumerSchema = new Schema({
   cart: {
     items: [
       {
-        productID: {
+        productId: {
           type: Schema.Types.ObjectId,
           ref: "Product",
           required: true,
@@ -33,15 +33,15 @@ const ConsumerSchema = new Schema({
   },
 });
 
-ConsumerSchema.methods.addToCart = function (product: any): void {
+ConsumerSchema.methods.addToCart = function (productId: Types.ObjectId, quantity: number): void {
   const productIndex: number = this.cart.items.findIndex((cp: cartType) => {
-    return cp.productID == product._id;
+    return JSON.stringify(cp.productId) === JSON.stringify(productId);
   });
-  let newQuantity: number = 1;
+  let newQuantity: number = quantity;
   const updatedCartItems: Array<cartType> = [...this.cart.items];
   if (productIndex === -1) {
     updatedCartItems.push({
-      productID: product._id,
+      productId: productId,
       quantity: newQuantity,
     });
   }
@@ -52,9 +52,11 @@ ConsumerSchema.methods.addToCart = function (product: any): void {
   return this.save();
 };
 
-ConsumerSchema.methods.incrementProductInCart = function (product: any): void {
+ConsumerSchema.methods.incrementProductInCart = function (
+  productId: Types.ObjectId
+): void {
   const productIndex: number = this.cart.items.findIndex((cp: cartType) => {
-    return cp.productID == product._id;
+    return JSON.stringify(cp.productId) === JSON.stringify(productId);
   });
   let newQuantity: number = 1;
   const updatedCartItems: Array<cartType> = [...this.cart.items];
@@ -69,9 +71,11 @@ ConsumerSchema.methods.incrementProductInCart = function (product: any): void {
   return this.save();
 };
 
-ConsumerSchema.methods.decrementProductInCart = function (product: any): void {
+ConsumerSchema.methods.decrementProductInCart = function (
+  productId: Types.ObjectId
+): void {
   const productIndex: number = this.cart.items.findIndex((cp: cartType) => {
-    return cp.productID == product._id;
+    return JSON.stringify(cp.productId) == JSON.stringify(productId);
   });
   let newQuantity: number = 1;
   const updatedCartItems: Array<cartType> = [...this.cart.items];
@@ -90,12 +94,17 @@ ConsumerSchema.methods.decrementProductInCart = function (product: any): void {
 };
 
 ConsumerSchema.methods.removeFromCart = function (
-  productID: Schema.Types.ObjectId
+  productId: Types.ObjectId
 ): void {
   const updatedCartItems = this.cart.items.filter((item: cartType) => {
-    return item.productID.toString() !== productID.toString();
+    return JSON.stringify(item.productId) !== JSON.stringify(productId);
   });
   this.cart.items = updatedCartItems;
+  return this.save();
+};
+
+ConsumerSchema.methods.clearCart = function (): void {
+  this.cart = { };
   return this.save();
 };
 

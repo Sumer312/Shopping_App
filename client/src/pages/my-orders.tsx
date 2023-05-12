@@ -8,12 +8,17 @@ import { Triangle } from "react-loader-spinner";
 
 export default function MyOrders() {
   const ID = useAuthStore((state) => state.ID);
+  const token = useAuthStore((state) => state.token)
   const [orders, setOrders] = useState<Array<ordersType>>();
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .get(`/consumer/my-orders/${ID}`)
+      .get(`/consumer/my-orders/${ID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res);
         setTimeout(() => {
@@ -21,7 +26,7 @@ export default function MyOrders() {
         }, 500);
       })
       .catch(() => setError(true));
-  }, [ID]);
+  }, [ID, token]);
   return orders ? (
     <main className={styles.main}>
       <div className="grid gap-16 xl:grid-cols-4 xs:grid-col-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">

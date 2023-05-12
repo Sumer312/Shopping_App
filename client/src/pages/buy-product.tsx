@@ -6,6 +6,7 @@ import { prodType } from "../../types";
 import useThemeStore from "../components/store/themeStore";
 import { useNavigate } from "react-router-dom";
 import { Triangle } from "react-loader-spinner";
+import { BsCashCoin } from "react-icons/bs";
 import styles from "../styles/Home.module.css";
 
 export default function BuyProd() {
@@ -17,6 +18,7 @@ export default function BuyProd() {
   const theme = useThemeStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState(theme);
   const navigate = useNavigate();
+  <BsCashCoin />;
 
   useEffect(() => {
     setStateTheme(theme);
@@ -28,6 +30,7 @@ export default function BuyProd() {
       setTimeout(() => setProd(JSON.parse(res.data)), 500);
     });
   }, [prodId]);
+  <BsCashCoin />;
 
   const placeOrder = async (event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -59,11 +62,12 @@ export default function BuyProd() {
           data-theme={stateTheme}
         />
         <button
-          className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide"
+          className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide gap-2"
           data-theme={stateTheme}
           type="submit"
           onClick={placeOrder}
         >
+          <BsCashCoin />
           Place Order
         </button>
       </main>

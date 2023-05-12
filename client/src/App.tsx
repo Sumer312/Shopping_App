@@ -51,7 +51,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/auth/seller/login"
-            element={role !== authEnum.SELLER && <SellerLogin />}
+            element={
+              role !== authEnum.SELLER ? <SellerLogin /> : <BadRequest />
+            }
           />
           <Route
             path="/auth/seller/signup"
@@ -97,7 +99,9 @@ function App() {
           />
           <Route
             path="/my-cart"
-            element={role === authEnum.CONSUMER ? <MyCart /> : <MyCart />}
+            element={
+              role === authEnum.CONSUMER ? <MyCart /> : <ConsumerLogin />
+            }
           />
           <Route path="/men/hoodies" element={<MenHoodies />} />
           <Route path="/men/tops" element={<MenTops />} />

@@ -1,7 +1,7 @@
 import { useReducer, Reducer, MouseEvent, useEffect, useState } from "react";
 import axios from "../../../../api/axios";
 import useThemeStore, { themeEnum } from "../../../components/store/themeStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../components/store/authStore";
 
 enum ActionEnum {
@@ -21,7 +21,7 @@ interface ActionType {
 
 export default function Login() {
   const changeRoleToSeller = useAuthStore((state) => state.changeRoleToSeller);
-
+  const navigate = useNavigate()
   const theme = useThemeStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
 
@@ -64,6 +64,7 @@ export default function Login() {
           password: password,
         });
         if (response.status === 200) {
+          navigate("/")
           changeRoleToSeller(response.data.token, response.data.id);
         }
       } catch (err) {

@@ -483,7 +483,7 @@ export default function AddProd() {
             </optgroup>
           </select>
           <button
-            className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide"
+            className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide gap-2"
             data-theme={stateTheme}
             type="submit"
             onClick={handleSubmit}

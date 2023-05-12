@@ -10,11 +10,18 @@ import { Triangle } from "react-loader-spinner";
 export default function MyProds() {
   const [cards, setCards] = useState<Array<cardType> | undefined>(undefined);
   const ID = useAuthStore((state) => state.ID);
+  const token = useAuthStore((state) => state.token);
   useEffect(() => {
-    axios.get(`/seller/get-products/${ID}`).then((result) => {
-      setTimeout(() => setCards(result.data.products), 500);
-    });
-  }, [ID]);
+    axios
+      .get(`/seller/get-products/${ID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((result) => {
+        setTimeout(() => setCards(result.data.products), 500);
+      });
+  }, [ID, token]);
   return cards ? (
     <main className={styles.main}>
       <div className="grid gap-16 xl:grid-cols-4 xl:gap-16 xs:grid-col-1 sm:grid-cols-1 sm:gap-16 md:grid-cols-2 md:gap-16 lg:grid-cols-2 lg:gap-16">

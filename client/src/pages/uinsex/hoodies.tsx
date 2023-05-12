@@ -35,7 +35,6 @@ export default function UnisexHoodies() {
           </Link>
         ))}
       </div>
-      <h1>Hello Men Hoodies</h1>
     </main>
   ) : (
     <main className={styles.main}>

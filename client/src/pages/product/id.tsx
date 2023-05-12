@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../../api/axios";
 import styles from "../../styles/Home.module.css";
 import Carousel from "../../components/carousel";
 import { prodType } from "../../../types";
@@ -7,11 +7,15 @@ import useThemeStore from "../../components/store/themeStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { Triangle } from "react-loader-spinner";
 import { BsCartPlus } from "react-icons/bs";
+import useAuthStore from "../../components/store/authStore";
 
 export default function Details() {
   const theme = useThemeStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
   const [prod, setProd] = useState<prodType>();
+  const [cartQuantity, setCartQuantity] = useState<number>(1);
+  const ID = useAuthStore((state) => state.ID);
+  const token = useAuthStore((state) => state.token)
   const params = useParams();
   const navigate = useNavigate();
 
@@ -20,10 +24,7 @@ export default function Details() {
   }, [theme]);
 
   useEffect(() => {
-    axios({
-      method: "get",
-      url: `http://localhost:5000/consumer/getById/${params.prodId}`,
-    }).then((result) => {
+    axios.get(`/consumer/getById/${params.prodId}`).then((result) => {
       setTimeout(() => setProd(JSON.parse(result.data)), 500);
     });
   }, [params.prodId]);
@@ -43,7 +44,7 @@ export default function Details() {
       <h1>{prod.title}</h1>
       <p>{prod.description}</p>
       <p>{prod.price}</p>
-      <div className="flex gap-8">
+      <div className="grid grid-cols-1 gap-4">
         <button
           data-theme={stateTheme}
           className={
@@ -55,16 +56,58 @@ export default function Details() {
         >
           {prod.quantity !== 0 ? "Buy Now" : "Out Of Stock"}
         </button>
-        <button
-          date-theme={stateTheme}
-          className={
-            prod.quantity !== 0
-              ? "btn btn-circle btn-outline btn-accent btn-lg"
-              : "btn btn-disabled btn-circle btn-lg"
-          }
-        >
-          <BsCartPlus />
-        </button>
+        <div tabIndex={0} className={prod.quantity > 0 ? "collapse" : "hidden"}>
+          <input type="checkbox" />
+          <div
+            date-theme={stateTheme}
+            className="collapse-title btn btn-wide btn-lg btn-accent"
+          >
+            Add to cart
+          </div>
+          <div className="collapse-content grid gap-8 grid-cols-1">
+            <label htmlFor="cartQuantity" className="mt-4">
+              Quantity
+            </label>
+            <input
+              type="number"
+              className="input input-bordered input-accent w-56 p-10"
+              id="cartQuantity"
+              min="1"
+              max={prod.quantity}
+              value={cartQuantity}
+              onChange={(event) =>
+                setCartQuantity(parseInt(event.target.value))
+              }
+              data-theme={stateTheme}
+            />
+            <button
+              className="btn btn-accent btn-outline btn-lg btn-square"
+              onClick={() => {
+                axios
+                  .post(
+                    "/consumer/add-to-cart",
+                    {
+                      consumerId: ID,
+                      prodId: params.prodId,
+                      quantity: cartQuantity,
+                    },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                      },
+                    }
+                  )
+                  .then((res) => {
+                    if (res.status === 200) {
+                      navigate("/my-cart");
+                    }
+                  });
+              }}
+            >
+              <BsCartPlus />
+            </button>
+          </div>
+        </div>
       </div>
     </main>
   ) : (

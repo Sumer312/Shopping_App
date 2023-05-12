@@ -4,6 +4,7 @@ import Consumer from "../models/consumers";
 import bcrypt from "bcrypt";
 import { createAccessToken } from "./auth";
 import Order from "../models/orders";
+import { Types } from "mongoose";
 
 const sendDataByCategory = async (
   req: Request,
@@ -165,30 +166,142 @@ const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-const addToCart = async (req: Request, res: Response, next: NextFunction) => {
-  const { prodId, consumerId } = req.body;
-  Consumer.findById(consumerId).then((consumer) => {
-    if (consumer) {
-      Product.findById(prodId).then((product) => {
-        consumer.addToCart(product);
-      });
-    }
-  });
+const getCart = async (req: Request, res: Response, next: NextFunction) => {
+  const { consumerId } = req.params;
+  let prodArray: Array<{
+    title: string;
+    snippet: string;
+    maxQuantity: number;
+    quantity: number;
+    id: Types.ObjectId;
+  }> = [];
+  Consumer.findById(consumerId)
+    .then((consumer) => {
+      if (consumer) {
+        for (let i = 0; i < consumer.cart.items.length; i++) {
+          Product.findById(consumer.cart.items[i].productId).then((product) => {
+            if (product) {
+              prodArray.push({
+                title: product.title,
+                snippet: product.snippet,
+                maxQuantity: product.quantity,
+                quantity: consumer.cart.items[i].quantity,
+                id: product._id,
+              });
+              if (i === consumer.cart.items.length - 1) {
+                res.status(200).json({
+                  message: "Cart found",
+                  cart: prodArray,
+                });
+              }
+            }
+          });
+        }
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
-const removeToCart = async (
+const addToCart = async (req: Request, res: Response, next: NextFunction) => {
+  const { prodId, consumerId, quantity } = req.body;
+  try {
+    Consumer.findById(consumerId).then((consumer) => {
+      if (consumer) {
+        Product.findById(prodId).then((product) => {
+          if (product) {
+            consumer.addToCart(product._id, quantity);
+            res.status(200).json({ message: "Product successfully added" });
+          }
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err });
+  }
+};
+
+const incrementCart = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { prodId, consumerId } = req.body;
+  try {
+    Consumer.findById(consumerId).then((consumer) => {
+      if (consumer) {
+        Product.findById(prodId).then((product) => {
+          if (product) {
+            consumer.incrementProductInCart(product?._id);
+            res
+              .status(200)
+              .json({ message: "Quantity successfully incremented" });
+          }
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err });
+  }
+};
+
+const decrementCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { prodId, consumerId } = req.body;
+  try {
+    Consumer.findById(consumerId).then((consumer) => {
+      if (consumer) {
+        Product.findById(prodId).then((product) => {
+          if (product) {
+            consumer.decrementProductInCart(product._id);
+            res
+              .status(200)
+              .json({ message: "Quantity successfully decremented" });
+          }
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err });
+  }
+};
+
+const removeFromCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { prodId, consumerId } = req.body;
+  try {
+    Consumer.findById(consumerId).then((consumer) => {
+      if (consumer) {
+        Product.findById(prodId).then((product) => {
+          if (product) {
+            consumer.removeFromCart(product._id);
+            res.status(200).json({ message: "Product successfully removed" });
+          }
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err });
+  }
+};
+
+const clearCart = async (req: Request, res: Response, next: NextFunction) => {
+  const { consumerId } = req.params;
   Consumer.findById(consumerId).then((consumer) => {
     if (consumer) {
-      Product.findById(prodId).then((product) => {
-        if (product) {
-          consumer.removeFromCart(prodId);
-        }
-      });
+      consumer.clearCart();
+      res.status(200).json({ message: "cart cleared" });
     }
   });
 };
@@ -201,4 +314,10 @@ export {
   signup,
   getOrders,
   cancelOrder,
+  getCart,
+  addToCart,
+  incrementCart,
+  decrementCart,
+  removeFromCart,
+  clearCart,
 };
