@@ -12,6 +12,7 @@ import axios from "../../api/axios";
 import useAuthStore from "../components/store/authStore";
 import { useNavigate } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
+import { toast, ToastContainer, Flip } from "react-toastify";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -160,6 +161,34 @@ export default function AddProd() {
     }
   );
 
+  const notifySuccess = (text: string) => {
+    toast.success(text, {
+      toastId: "success",
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: stateTheme === themeEnum.LIGHT ? "colored" : "dark",
+      transition: Flip,
+    });
+  };
+
+  const notifyError = (text: string) => {
+    toast.success(text, {
+      toastId: "error",
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: stateTheme === themeEnum.LIGHT ? "colored" : "dark",
+      transition: Flip,
+    });
+  };
+
   const fileHandler = (file: File): Promise<string | ArrayBuffer | null> => {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
@@ -195,34 +224,34 @@ export default function AddProd() {
       coverImage &&
       category
     ) {
-      try {
-        await axios
-          .post(
-            `/seller/add-product`,
-            {
-              title: title,
-              snippet: snippet,
-              description: description,
-              price: price,
-              quantity: quantity,
-              coverImage: JSON.parse(coverImage),
-              imageArray: imageArray,
-              category: category,
+      axios
+        .post(
+          `/seller/add-product`,
+          {
+            title: title,
+            snippet: snippet,
+            description: description,
+            price: price,
+            quantity: quantity,
+            coverImage: JSON.parse(coverImage),
+            imageArray: imageArray,
+            category: category,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            if (response.status === 200) {
-              navigate(`/`);
-            }
-          });
-      } catch (err) {
-        console.log("Data not uploaded, err: " + err);
-      }
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            notifySuccess("Product added");
+            setTimeout(() => {
+              navigate("/");
+            }, 3000);
+          }
+        })
+        .catch((err) => notifyError(err.message));
     }
   }
   return (
@@ -232,6 +261,30 @@ export default function AddProd() {
         (stateTheme === themeEnum.LIGHT ? "-light" : "")
       }
     >
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="colored"
+        limit={1}
+        containerId={"success"}
+      />
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="colored"
+        limit={1}
+        containerId={"error"}
+      />
       <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
         <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
           <label

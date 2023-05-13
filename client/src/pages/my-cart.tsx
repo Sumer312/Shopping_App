@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 export default function MyCart() {
   const ID = useAuthStore((state) => state.ID);
   const token = useAuthStore((state) => state.token);
+  const [noStock, setNoStock] = useState<boolean>(false);
   const navigate = useNavigate();
   const [cart, setCart] = useState<Array<cartCardType>>();
   useEffect(() => {
@@ -21,7 +22,15 @@ export default function MyCart() {
         },
       })
       .then((res) => {
-        console.log(res);
+        for (let i = 0; i < res.data.cart.length; i++) {
+          if (res.data.cart[i].quantity > res.data.cart[i].maxQuantity) {
+            setNoStock(true);
+            break;
+          }
+        }
+        return res;
+      })
+      .then((res) => {
         setTimeout(() => {
           setCart(res.data.cart);
         }, 500);
@@ -71,7 +80,11 @@ export default function MyCart() {
       </div>
       <div className="grid grid-cols-1 gap-4 xl:flex lg:flex md:flex mt-8">
         <button
-          className="btn btn-lg btn-wide btn-outline btn-accent gap-2"
+          className={
+            noStock
+              ? "btn btn-lg btn-wide btn-disabled gap-2"
+              : "btn btn-lg btn-wide btn-outline btn-accent gap-2"
+          }
           onClick={placeOrder}
         >
           <BsCashCoin />

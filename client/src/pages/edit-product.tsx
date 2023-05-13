@@ -12,6 +12,7 @@ import axios from "../../api/axios";
 import useAuthStore from "../components/store/authStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineSync, AiFillDelete } from "react-icons/ai";
+import { toast, ToastContainer, Flip } from "react-toastify";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -117,6 +118,34 @@ export default function EditProd() {
     dataFetched.current
   );
 
+  const notifySuccess = (text: string) => {
+    toast.success(text, {
+      toastId: "success",
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: stateTheme === themeEnum.LIGHT ? "colored" : "dark",
+      transition: Flip,
+    });
+  };
+
+  const notifyError = (text: string) => {
+    toast.success(text, {
+      toastId: "error",
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: stateTheme === themeEnum.LIGHT ? "colored" : "dark",
+      transition: Flip,
+    });
+  };
+
   useEffect(() => {
     axios
       .get(`/seller/get-product/${prodId}`, {
@@ -145,33 +174,35 @@ export default function EditProd() {
       price &&
       quantity
     ) {
-      try {
-        await axios
-          .post(
-            `/seller/edit-product`,
-            {
-              title: title,
-              snippet: snippet,
-              description: description,
-              price: price,
-              quantity: quantity,
-              sellerId: ID,
-              prodId: prodId,
+      axios
+        .post(
+          `/seller/edit-product`,
+          {
+            title: title,
+            snippet: snippet,
+            description: description,
+            price: price,
+            quantity: quantity,
+            sellerId: ID,
+            prodId: prodId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            if (response.status === 200) {
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            notifySuccess(response.data.message);
+            setTimeout(() => {
               navigate(`/`);
-            }
-          });
-      } catch (err) {
-        console.log("Data not uploaded, err: " + err);
-      }
+            }, 3000);
+          }
+        })
+        .catch((err) => {
+          notifyError(err.message);
+        });
     }
   }
 
@@ -185,28 +216,28 @@ export default function EditProd() {
       price &&
       quantity
     ) {
-      try {
-        await axios
-          .post(
-            `/seller/delete-product`,
-            {
-              sellerId: ID,
-              prodId: prodId,
+      axios
+        .post(
+          `/seller/delete-product`,
+          {
+            sellerId: ID,
+            prodId: prodId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
-          .then((response) => {
-            if (response.status === 200) {
-              navigate(`/`);
-            }
-          });
-      } catch (err) {
-        console.log("Data not uploaded, err: " + err);
-      }
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            notifySuccess(response.data.message);
+            setTimeout(() => {
+              navigate("/");
+            }, 3000);
+          }
+        })
+        .catch((err) => notifyError(err.message));
     }
   }
   return (
@@ -216,6 +247,30 @@ export default function EditProd() {
         (stateTheme === themeEnum.LIGHT ? "-light" : "")
       }
     >
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="colored"
+        limit={1}
+        containerId={"success"}
+      />
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="colored"
+        limit={1}
+        containerId={"error"}
+      />
       <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
         <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
           <label

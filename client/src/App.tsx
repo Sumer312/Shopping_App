@@ -27,6 +27,8 @@ import BuyProd from "./pages/buy-product.tsx";
 import MyOrders from "./pages/my-orders.tsx";
 import MyCart from "./pages/my-cart.tsx";
 import "./styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   const theme = useThemeStore((state) => state.theme);

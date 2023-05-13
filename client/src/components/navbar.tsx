@@ -19,6 +19,7 @@ import {
   RiArrowDropDownLine,
 } from "react-icons/ri";
 import { useSessionStorage } from "usehooks-ts";
+import axios from "../../api/axios";
 
 export default function Navbar() {
   const [open, setOpen] = useSessionStorage<boolean>("drawer", false);
@@ -29,6 +30,7 @@ export default function Navbar() {
   const role = useAuthStore((state) => state.role);
   const [stateRole, setStateRole] = useState<authEnum>();
   const changeRoleToGuest = useAuthStore((state) => state.changeRoleToGuest);
+  const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
     setStateRole(role);
@@ -38,6 +40,22 @@ export default function Navbar() {
     setStateTheme(theme);
   }, [theme]);
 
+  const logout = () => {
+    axios
+      .delete("/logout", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          changeRoleToGuest();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const SellerNavbar = () => {
     return (
       <>
@@ -84,7 +102,7 @@ export default function Navbar() {
                     My Products
                   </Link>
                 </li>
-                <li onClick={() => changeRoleToGuest()}>
+                <li onClick={logout}>
                   <a>
                     <CiLogout />
                     Logout
@@ -131,7 +149,7 @@ export default function Navbar() {
                   My Products
                 </Link>
               </li>
-              <li onClick={() => changeRoleToGuest()}>
+              <li onClick={logout}>
                 <a>
                   <CiLogout />
                   Logout
@@ -241,7 +259,7 @@ export default function Navbar() {
                     My Cart
                   </Link>
                 </li>
-                <li onClick={() => changeRoleToGuest()}>
+                <li onClick={logout}>
                   <a>
                     <CiLogout />
                     Logout
@@ -295,7 +313,7 @@ export default function Navbar() {
                   My Cart
                 </Link>
               </li>
-              <li onClick={() => changeRoleToGuest()}>
+              <li onClick={logout}>
                 <a>
                   <CiLogout />
                   Logout

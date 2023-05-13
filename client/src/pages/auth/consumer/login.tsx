@@ -3,6 +3,7 @@ import axios from "../../../../api/axios";
 import useThemeStore, { themeEnum } from "../../../components/store/themeStore";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../components/store/authStore";
+import { ToastContainer, toast, Flip } from "react-toastify";
 
 enum ActionEnum {
   SET_EMAIL = "SET_EMAIL",
@@ -10,8 +11,8 @@ enum ActionEnum {
 }
 
 interface StateType {
-  email: undefined | string;
-  password: undefined | string;
+  email: string;
+  password: string;
 }
 
 interface ActionType {
@@ -49,10 +50,23 @@ export default function Login() {
       }
     },
     {
-      email: undefined,
-      password: undefined,
+      email: "",
+      password: "",
     }
   );
+
+  const notifyError = (text: string) => {
+    toast.error(text, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: stateTheme === themeEnum.LIGHT ? "colored" : "dark",
+      transition: Flip,
+    });
+  };
 
   async function postData(event: MouseEvent<HTMLElement>) {
     event.preventDefault();
@@ -60,44 +74,62 @@ export default function Login() {
     if (!password || !email) {
       return;
     } else {
-      try {
-        const response = await axios.post(`/consumer/login`, {
+      axios
+        .post(`/consumer/login`, {
           email: email,
           password: password,
-        });
-        if (response.status === 200) {
-          navigate("/")
-          changeRoleToConsumer(response.data.token, response.data.id);
-        }
-      } catch (err) {
-        console.log(err);
-      }
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            navigate("/");
+            changeRoleToConsumer(response.data.token, response.data.id);
+          }
+        })
+        .catch((err) => notifyError(err.messageI));
     }
   }
   return (
     <div className="min-h-screen py-6 flex flex-col justify-center sm:py-12">
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="colored"
+        limit={1}
+      />
       <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div
-          className={
-            stateTheme === themeEnum.DARK
-              ? "absolute inset-0 bg-gradient-to-r from-violet-200 to-violet-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
-              : "absolute inset-0 bg-gradient-to-r from-amber-200 to-amber-400 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
-          }
-        ></div>
-        <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+        <div className="relative px-4 py-10 bg-accent shadow-lg sm:rounded-3xl sm:p-20">
           <div className="max-w-md mx-auto">
             <div>
-              <h1 className="text-2xl text-black font-semibold">Login</h1>
+              <h1
+                className={
+                  "text-2xl text" +
+                  (stateTheme === themeEnum.LIGHT ? "-secondary" : "-neutral") +
+                  "-content font-semibold"
+                }
+              >
+                Login
+              </h1>
             </div>
             <div className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+              <div className="py-8 text-base leading-6 space-y-6 text-gray-700 sm:text-lg sm:leading-7">
                 <div className="relative">
                   <input
                     autoComplete="off"
                     id="email"
                     name="email"
                     type="text"
-                    className="peer placeholder-transparent bg-white h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                    className={
+                      "peer placeholder-transparent bg-accent h-10 w-full border-b-2 border-primary text" +
+                      (stateTheme === themeEnum.LIGHT
+                        ? "-secondary"
+                        : "-neutral") +
+                      "-content focus:outline-none focus:borer-rose-600"
+                    }
                     placeholder="Email address"
                     value={state.email}
                     onChange={(event) =>
@@ -109,7 +141,11 @@ export default function Login() {
                   />
                   <label
                     htmlFor="email"
-                    className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    className={
+                      "absolute left-0 -top-3.5 text-gray-100 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-100 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-primary" +
+                      (stateTheme === themeEnum.DARK ? "-content" : "") +
+                      " peer-focus:text-sm"
+                    }
                   >
                     Email Address
                   </label>
@@ -120,7 +156,13 @@ export default function Login() {
                     id="password"
                     name="password"
                     type="password"
-                    className="peer placeholder-transparent bg-white h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                    className={
+                      "peer placeholder-transparent bg-accent h-10 w-full border-b-2 border-primary text" +
+                      (stateTheme === themeEnum.LIGHT
+                        ? "-secondary"
+                        : "-neutral") +
+                      "-content focus:outline-none focus:borer-rose-600"
+                    }
                     placeholder="Password"
                     value={state.password}
                     onChange={(event) =>
@@ -132,7 +174,11 @@ export default function Login() {
                   />
                   <label
                     htmlFor="password"
-                    className="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    className={
+                      "absolute left-0 -top-3.5 text-gray-100 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-100 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-primary" +
+                      (stateTheme === themeEnum.DARK ? "-content" : "") +
+                      " peer-focus:text-sm"
+                    }
                   >
                     Password
                   </label>
@@ -140,15 +186,23 @@ export default function Login() {
                 <div className="relative">
                   <button
                     onClick={(event) => postData(event)}
-                    className="btn btn-outline btn-accent"
+                    className="btn btn-primary"
                     data-theme={theme}
                   >
                     Submit
                   </button>
-                  <p className="mt-4 text-grey-600 text-sm">
+                  <p
+                    className={
+                      "mt-4 text" +
+                      (stateTheme === themeEnum.LIGHT
+                        ? "-secondary"
+                        : "-neutral") +
+                      "-content text-sm"
+                    }
+                  >
                     Don't have an account{" "}
                     <Link
-                      className="text-blue-600 hover:underline"
+                      className="text-accent-content text-lg hover:underline"
                       to="/auth/consumer/signup"
                     >
                       Register

@@ -17,6 +17,7 @@ const DrawerLayout = ({ children }: Props) => {
         type="checkbox"
         className="drawer-toggle"
         checked={open}
+        readOnly
       />
       <div className="drawer-content flex flex-col">{children}</div>
       <div className="drawer-side">

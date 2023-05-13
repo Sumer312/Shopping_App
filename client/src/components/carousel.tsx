@@ -10,7 +10,7 @@ export default function Carousel(props: imageArray) {
   }, [theme]);
   return (
     <>
-      <div className="carousel w-full" data-theme={stateTheme}>
+      <div className="carousel w-full snap-none" data-theme={stateTheme}>
         {props.imageArray.map((ele, index) => (
           <div
             key={index}
