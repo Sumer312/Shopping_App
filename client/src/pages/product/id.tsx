@@ -24,7 +24,7 @@ export default function Details() {
   }, [theme]);
 
   useEffect(() => {
-    axios.get(`/consumer/getById/${params.prodId}`).then((result) => {
+    axios.get(`/consumer/get-by-Id/${params.prodId}`).then((result) => {
       setTimeout(() => setProd(JSON.parse(result.data)), 500);
     });
   }, [params.prodId]);

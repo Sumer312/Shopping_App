@@ -2,45 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-div.bg-black::-webkit-scrollbar {
-  width: 10px;      
-  background: #000;         /* width of the entire scrollbar */
+*::-webkit-scrollbar {
+  width: 4px;
+  background: hsl(var(--nf));         /* width of the entire scrollbar */
 }
 
-div.bg-black::-webkit-scrollbar-thumb {
-  background-color: rgb(46, 46, 46);    /* color of the scroll thumb */
+*::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--a));    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
   border: 3px solid transparent;  /* creates padding around scroll thumb */
 }
 
-div.bg-black::-webkit-scrollbar-thumb:active{
-  background-color: rgb(94, 94, 94);
-}
-
-div.bg-white::-webkit-scrollbar {
-  width: 10px;      
-  background: #fff;         /* width of the entire scrollbar */
-}
-
-div.bg-white::-webkit-scrollbar-thumb {
-  background-color: rgb(46, 46, 46);    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
-  border: 3px solid transparent;  /* creates padding around scroll thumb */
-}
-
-div.bg-white::-webkit-scrollbar-thumb:active{
-  background-color: rgb(94, 94, 94);
+*::-webkit-scrollbar-thumb:active{
+  background-color: hsl(var(--nc));
 }
 
 .scrollbar-hide-light::-webkit-scrollbar{
   height: 10px;
-  background: #FFF;
+  background:  rgb(254 243 199 / var(--tw-bg-opacity));
 }
 .scrollbar-hide-light:active::-webkit-scrollbar-thumb{
-  background-color: rgb(94, 94, 94) ;
+  background-color: hsl(var(--nc));
 }
 .scrollbar-hide-light::-webkit-scrollbar-thumb {
-  background-color: rgb(46, 46, 46);    /* color of the scroll thumb */
+  background-color: hsl(var(--a));    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
   border: 3px solid transparent;  /* creates padding around scroll thumb */
 }
@@ -50,11 +35,11 @@ div.bg-white::-webkit-scrollbar-thumb:active{
 }
 
 .scrollbar-hide:active::-webkit-scrollbar-thumb{
-  background-color: rgb(94, 94, 94) ;
+  background-color: hsl(var(--nc));
 }
 
 .scrollbar-hide::-webkit-scrollbar-thumb {
-  background-color: rgb(46, 46, 46);    /* color of the scroll thumb */
+  background-color: hsl(var(--a));    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
   border: 3px solid transparent;  /* creates padding around scroll thumb */
 }

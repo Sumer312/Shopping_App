@@ -8,6 +8,7 @@ export default function Carousel(props: imageArray) {
   useEffect(() => {
     setStateTheme(theme);
   }, [theme]);
+  
   return (
     <>
       <div className="carousel w-full snap-none" data-theme={stateTheme}>

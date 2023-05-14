@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import useThemeStore from "./store/themeStore";
 import { cardPropType } from "../../types";
 
-//"https://jojo-news.com/wp-content/uploads/2021/07/JJLEnding-1024x576.png"
-
 export default function Product(props: cardPropType) {
   const theme = useThemeStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
   useEffect(() => {
     setStateTheme(theme);
   }, [theme]);
+
   return (
-    <div className="card w-96 hover:bg-accent" data-theme={stateTheme}>
+    <div
+      className="card w-96 bg-neutral bg-opacity-60 text-neutral-content hover:bg-accent"
+      data-theme={stateTheme}
+    >
       <figure>
         <img
           className="card-img-top"

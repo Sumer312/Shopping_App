@@ -20,7 +20,6 @@ export default function MyOrders() {
         },
       })
       .then((res) => {
-        console.log(res);
         setTimeout(() => {
           setOrders(res.data.orders);
         }, 500);

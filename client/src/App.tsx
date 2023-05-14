@@ -43,8 +43,8 @@ function App() {
       data-theme={stateTheme}
       className={
         stateTheme === themeEnum.LIGHT
-          ? "bg-white text-secondary-content"
-          : "bg-black  text-neutral-content"
+          ? "bg-amber-100 text-secondary-content"
+          : "bg-black text-neutral-content"
       }
     >
       <BrowserRouter>

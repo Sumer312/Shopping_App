@@ -85,7 +85,7 @@ export default function Login() {
             changeRoleToConsumer(response.data.token, response.data.id);
           }
         })
-        .catch((err) => notifyError(err.messageI));
+        .catch((err) => notifyError(err.message));
     }
   }
   return (

@@ -112,7 +112,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="fixed z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <div className="flex-1">
             <Link
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
@@ -137,7 +137,6 @@ export default function Navbar() {
               className="dropdown-content menu p-2 shadow-md rounded-box w-52 bg-base-100 backdrop-filter backdrop-blur-lg bg-opacity-60"
             >
               <li>
-                {" "}
                 <Link to="/add-product">
                   <BsPlusCircleFill />
                   Add Product
@@ -269,7 +268,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="fixed z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <div className="flex-none">
             <button
               className="btn btn-ghost drawer-button"
@@ -425,7 +424,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="fixed z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <div className="flex-none">
             <button className="btn btn-ghost" onClick={() => setOpen(!open)}>
               <RiMenuFill size="1.5rem" />

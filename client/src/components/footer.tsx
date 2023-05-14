@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="footer p-12 bg-base-200 text-base-content">
+    <footer className="footer p-12 bg-base-100 text-base-content">
       <div>
         <GiRobinHoodHat size="4rem" />
         <p>
