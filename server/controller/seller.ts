@@ -17,7 +17,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   await Seller.findOne({ name: name, email: email, password: password }).then(
     (seller) => {
       if (seller) {
-        res.status(409).json({ message: "seller account already exists" });
+        res.status(409).json({ message: "Seller account already exists" });
       }
     }
   );
@@ -70,6 +70,25 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
+const cloudinaryUploadFunction = async (
+  file: string
+): Promise<imageObjectType> => {
+  return new Promise((resolve) => {
+    cloudinary.uploader.upload(file, (err, res) => {
+      if (res) {
+        if (err) {
+          console.log(err);
+        }
+        resolve({
+          publicId: res.public_id,
+          secureUrl: res.secure_url,
+        });
+      }
+    });
+  });
+};
+
+
 const addProduct = async (req: Request, res: Response, next: NextFunction) => {
   const {
     title,
@@ -82,46 +101,56 @@ const addProduct = async (req: Request, res: Response, next: NextFunction) => {
     category,
   } = req.body;
   try {
-    // cloudinary.api
-    //   .ping()
-    //   .then((res) => {
-    //     console.log(`Cloudinary connection ${res.status}`);
-    //   })
-    //   .catch((err) => console.log(err + " OH NO!!!!"));
-
-    const imageUrlArray: Array<imageObjectType> = [];
-    const coverImageUpload = { public_id: "", secure_url: "" };
-    // await cloudinary.uploader.upload(coverImage);
+    console.log(req.seller);
+    const coverImageUpload = await cloudinaryUploadFunction(coverImage);
     if (imageArray !== undefined) {
+      const imageUrlArray: Array<imageObjectType> = [];
       for (let i = 0; i < imageArray.length; i++) {
-        const image = await cloudinary.uploader.upload(imageArray[i]);
-        imageUrlArray.push({
-          publicId: image.public_id,
-          secureUrl: image.secure_url,
+        cloudinaryUploadFunction(imageArray[i]).then((image) => {
+          imageUrlArray.push(image);
+          if (i === imageArray.length - 1) {
+            const product = new Product({
+              title: title,
+              snippet: snippet,
+              description: description,
+              quantity: quantity,
+              price: price,
+              coverImage: coverImageUpload,
+              imageArray: imageUrlArray,
+              category: category,
+              sellerId: req.seller,
+            });
+            product.save();
+            console.log(product);
+            if (product) {
+              res.status(200).json({
+                message: "Product added",
+                category: category,
+              });
+            }
+          }
         });
       }
-    }
-    console.log(req.seller);
-    const product = await Product.create({
-      title: title,
-      snippet: snippet,
-      description: description,
-      quantity: quantity,
-      price: price,
-      coverImage: {
-        publicId: coverImageUpload.public_id,
-        secureUrl: coverImageUpload.secure_url,
-      },
-      imageArray: imageUrlArray,
-      category: category,
-      sellerId: req.seller,
-    });
-    console.log(product);
-    if (product) {
-      res.status(200).json({
-        message: "Product added",
+    } else {
+      const product = new Product({
+        title: title,
+        snippet: snippet,
+        description: description,
+        quantity: quantity,
+        price: price,
+        coverImage: coverImageUpload,
+        imageArray: [],
         category: category,
+        sellerId: req.seller,
       });
+      product.save();
+      console.log(product);
+      if (product) {
+        res.status(200).json({
+          message: "Product added",
+          category: category,
+        });
+      }
     }
   } catch (err) {
     console.log(err);
@@ -146,10 +175,10 @@ const updateProduct = async (
         price: price,
       }
     ).then(() => {
-      res.status(200).json({ message: "product updated" });
+      res.status(200).json({ message: "Product updated" });
     });
   } catch (err) {
-    res.status(500).json({ message: "internal server error" });
+    res.status(500).json({ message: "Internal server error" });
     console.log(err);
   }
 };
@@ -162,7 +191,7 @@ const getProducts = async (req: Request, res: Response, next: NextFunction) => {
     .json(
       products
         ? { message: "Products found", products: products }
-        : { message: "no products found" }
+        : { message: "No products found" }
     );
 };
 
@@ -178,7 +207,7 @@ const getProductById = async (
     .json(
       product
         ? { message: "Product found", product: product }
-        : { message: "no product found" }
+        : { message: "No product found" }
     );
 };
 
@@ -190,20 +219,19 @@ const deleteProduct = async (
   const { sellerId, prodId } = req.body;
   try {
     Product.findOne({ sellerId: sellerId, _id: prodId })
-      .then(async (res) => {
-        try {
-          if (res) {
-            const { imageArray, coverImage } = res;
-            console.log(coverImage, "  ", imageArray);
-            await cloudinary.uploader.destroy(coverImage.public_id);
-            for (let i = 0; i < imageArray.length; i++) {
-              if (imageArray[i]) {
-                await cloudinary.uploader.destroy(imageArray[i].publicId!);
+      .then((res) => {
+        if (res) {
+          const { imageArray, coverImage } = res;
+          cloudinary.uploader.destroy(coverImage.publicId).then(() => {
+            if (imageArray.length > 0) {
+              for (let i = 0; i < imageArray.length; i++) {
+                if (imageArray[i]) {
+                  cloudinary.uploader.destroy(imageArray[i].publicId!);
+                }
               }
             }
-          }
-        } catch (err) {
-          console.log(err);
+          });
+          console.log(coverImage, "  ", imageArray);
         }
       })
       .then(() => {

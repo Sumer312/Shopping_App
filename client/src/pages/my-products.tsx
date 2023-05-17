@@ -19,6 +19,8 @@ export default function MyProds() {
         },
       })
       .then((result) => {
+        console.log(result);
+        
         setTimeout(() => setCards(result.data.products), 500);
       });
   }, [ID, token]);

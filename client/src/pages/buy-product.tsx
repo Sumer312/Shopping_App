@@ -75,7 +75,11 @@ export default function BuyProd() {
         }
       })
       .catch((err) => {
-        notifyError(err.message);
+        notifyError(
+          err.response && err.response.data
+            ? err.response.data.message
+            : err.message
+        );
       });
   };
 

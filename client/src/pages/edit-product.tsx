@@ -13,6 +13,7 @@ import useAuthStore from "../components/store/authStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineSync, AiFillDelete } from "react-icons/ai";
 import { toast, ToastContainer, Flip } from "react-toastify";
+import { Triangle } from "react-loader-spinner";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -43,6 +44,7 @@ export default function EditProd() {
   const [stateTheme, setStateTheme] = useState<string>();
   const token = useAuthStore((state) => state.token);
   const ID = useAuthStore((state) => state.ID);
+  const [overlay, setOverlay] = useState(false);
   const { prodId } = useParams();
   const dataFetched = useRef({
     title: "",
@@ -165,6 +167,7 @@ export default function EditProd() {
   }, [prodId, token]);
 
   async function handleUpdate(event: MouseEvent<HTMLElement>) {
+    setOverlay(true);
     event.preventDefault();
     const { title, snippet, description, price, quantity } = state;
     if (
@@ -196,7 +199,7 @@ export default function EditProd() {
           if (response.status === 200) {
             notifySuccess(response.data.message);
             setTimeout(() => {
-              navigate(`/`);
+              navigate(`/my-products`);
             }, 3000);
           }
         })
@@ -207,6 +210,7 @@ export default function EditProd() {
   }
 
   async function handleDelete(event: MouseEvent<HTMLElement>) {
+    setOverlay(true)
     event.preventDefault();
     const { title, snippet, description, price, quantity } = state;
     if (
@@ -237,16 +241,17 @@ export default function EditProd() {
             }, 3000);
           }
         })
-        .catch((err) => notifyError(err.message));
+        .catch((err) =>
+          notifyError(
+            err.response && err.response.data
+              ? err.response.data.message
+              : err.message
+          )
+        );
     }
   }
   return (
-    <div
-      className={
-        "flex overflow-y-hidden overflow-x-scroll scrollbar-hide" +
-        (stateTheme === themeEnum.LIGHT ? "-light" : "")
-      }
-    >
+    <>
       <ToastContainer
         position="top-center"
         autoClose={2000}
@@ -271,161 +276,187 @@ export default function EditProd() {
         limit={1}
         containerId={"error"}
       />
-      <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
-        <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mb-4 mr-96"
-            }
-            htmlFor="title"
-          >
-            Name
-          </label>
-          <input
-            type="text"
-            placeholder="Type here"
-            name="title"
-            value={state.title}
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_TITLE,
-                payload: event.target.value,
-                FetchPayload: dataFetched.current,
-              });
-            }}
+      {overlay && (
+        <div
+          className="fixed"
+          style={{ zIndex: "99999999", right: "45%", top: "10%" }}
+        >
+          <Triangle
+            height="200"
+            width="200"
+            color="hsl(var(--a))"
+            ariaLabel="triangle-loading"
+            wrapperClass=""
+            wrapperStyle={{}}
+            visible={true}
           />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mb-4 mr-96"
-            }
-            htmlFor="snippet"
-          >
-            Snippet
-          </label>
-          <input
-            type="text"
-            placeholder="Type here"
-            name="snippet"
-            value={state.snippet}
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_SNIPPET,
-                payload: event.target.value,
-                FetchPayload: dataFetched.current,
-              });
-            }}
-          />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mb-4"
-                : "block text-gray-900 text-sm font-bold mb-4"
-            }
-            htmlFor="description"
-          >
-            Description
-          </label>
-          <textarea
-            className="textarea textarea-accent h-44 lg:h-64 md:h-56 sm:h-56 xl:h-56 w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
-            name="description"
-            value={state.description}
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_DESCRIPTION,
-                payload: event.target.value,
-                FetchPayload: dataFetched.current,
-              });
-            }}
-            placeholder="Description"
-          ></textarea>
         </div>
-        <div className="grid h-96 flex-grow card place-items-start mb-24 xs:mt-12 xl:-mt-8 lg:-mt-8 xl:ml-36">
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
-            }
-            htmlFor="quantity"
-          >
-            Quantity
-          </label>
-          <input
-            type="number"
-            value={state.quantity}
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_QUANTITY,
-                payload: event.target.value,
-                FetchPayload: dataFetched.current,
-              });
-            }}
-            name="quantity"
-            placeholder="Enter quantity"
-            min="1"
-          />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
-            }
-            htmlFor="price"
-          >
-            Price
-          </label>
-          <input
-            type="number"
-            value={state.price}
-            placeholder="Enter price"
-            id="price"
-            step="10"
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_PRICE,
-                payload: event.target.value,
-                FetchPayload: dataFetched.current,
-              });
-            }}
-            min="1"
-          />
-          <button
-            className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide gap-2 mt-8"
-            data-theme={stateTheme}
-            type="submit"
-            onClick={handleUpdate}
-          >
-            <AiOutlineSync />
-            Update Product
-          </button>
-          <button
-            className="btn btn-lg btn-outline btn-error xs:btn-wide sm:btn-wide gap-2 mt-8"
-            data-theme={stateTheme}
-            type="submit"
-            onClick={handleDelete}
-          >
-            <AiFillDelete />
-            Delete Product
-          </button>
-          <br />
+      )}
+      <div className={overlay ? " pointer-events-none opacity-60" : ""}>
+        <div
+          className={
+            "flex overflow-y-hidden overflow-x-scroll scrollbar-hide" +
+            (stateTheme === themeEnum.LIGHT ? "-light" : "")
+          }
+        >
+          <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
+            <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mb-4 mr-96"
+                }
+                htmlFor="title"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                placeholder="Type here"
+                name="title"
+                value={state.title}
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_TITLE,
+                    payload: event.target.value,
+                    FetchPayload: dataFetched.current,
+                  });
+                }}
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mb-4 mr-96"
+                }
+                htmlFor="snippet"
+              >
+                Snippet
+              </label>
+              <input
+                type="text"
+                placeholder="Type here"
+                name="snippet"
+                value={state.snippet}
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_SNIPPET,
+                    payload: event.target.value,
+                    FetchPayload: dataFetched.current,
+                  });
+                }}
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mb-4"
+                    : "block text-gray-900 text-sm font-bold mb-4"
+                }
+                htmlFor="description"
+              >
+                Description
+              </label>
+              <textarea
+                className="textarea textarea-accent h-44 lg:h-64 md:h-56 sm:h-56 xl:h-56 w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
+                name="description"
+                value={state.description}
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_DESCRIPTION,
+                    payload: event.target.value,
+                    FetchPayload: dataFetched.current,
+                  });
+                }}
+                placeholder="Description"
+              ></textarea>
+            </div>
+
+            <div className="grid h-96 flex-grow card place-items-start mb-24 xs:mt-12 xl:-mt-8 lg:-mt-8 xl:ml-36">
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
+                }
+                htmlFor="quantity"
+              >
+                Quantity
+              </label>
+              <input
+                type="number"
+                value={state.quantity}
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_QUANTITY,
+                    payload: event.target.value,
+                    FetchPayload: dataFetched.current,
+                  });
+                }}
+                name="quantity"
+                placeholder="Enter quantity"
+                min="1"
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
+                }
+                htmlFor="price"
+              >
+                Price
+              </label>
+              <input
+                type="number"
+                value={state.price}
+                placeholder="Enter price"
+                id="price"
+                step="10"
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_PRICE,
+                    payload: event.target.value,
+                    FetchPayload: dataFetched.current,
+                  });
+                }}
+                min="1"
+              />
+              <button
+                className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide gap-2 mt-8"
+                data-theme={stateTheme}
+                type="submit"
+                onClick={handleUpdate}
+              >
+                <AiOutlineSync />
+                Update Product
+              </button>
+              <button
+                className="btn btn-lg btn-outline btn-error xs:btn-wide sm:btn-wide gap-2 mt-8"
+                data-theme={stateTheme}
+                type="submit"
+                onClick={handleDelete}
+              >
+                <AiFillDelete />
+                Delete Product
+              </button>
+              <br />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

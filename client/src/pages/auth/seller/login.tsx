@@ -84,7 +84,11 @@ export default function Login() {
           }
         })
         .catch((err) => {
-          notifyError(err.message);
+          notifyError(
+            err.response && err.response.data
+              ? err.response.data.message
+              : err.message
+          );
         });
     }
   }
@@ -189,7 +193,7 @@ export default function Login() {
                     className="btn btn-primary"
                     data-theme={theme}
                   >
-                    Submit
+                    Login
                   </button>
                   <p
                     className={

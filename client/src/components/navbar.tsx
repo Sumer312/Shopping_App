@@ -19,6 +19,7 @@ import {
   RiArrowDropDownLine,
 } from "react-icons/ri";
 import { useSessionStorage } from "usehooks-ts";
+import { toast, ToastContainer, Flip } from "react-toastify";
 import axios from "../../api/axios";
 
 export default function Navbar() {
@@ -40,6 +41,20 @@ export default function Navbar() {
     setStateTheme(theme);
   }, [theme]);
 
+  const notifyError = (text: string) => {
+    toast.error(text, {
+      toastId: "error",
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      draggable: true,
+      progress: undefined,
+      theme: stateTheme === themeEnum.LIGHT ? "colored" : "dark",
+      transition: Flip,
+    });
+  };
+
   const logout = () => {
     axios
       .delete("/logout", {
@@ -53,13 +68,25 @@ export default function Navbar() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        notifyError(err.message);
       });
   };
   const SellerNavbar = () => {
     return (
       <>
         <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="colored"
+            limit={1}
+            containerId={"error"}
+          />
           <div className="flex-1">
             <Link
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
@@ -113,6 +140,18 @@ export default function Navbar() {
           </div>
         </div>
         <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="colored"
+            limit={1}
+            containerId={"error"}
+          />
           <div className="flex-1">
             <Link
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
@@ -165,6 +204,18 @@ export default function Navbar() {
     return (
       <>
         <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="colored"
+            limit={1}
+            containerId={"error"}
+          />
           <div className="flex-1">
             <Link
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
@@ -269,6 +320,18 @@ export default function Navbar() {
           </div>
         </div>
         <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="colored"
+            limit={1}
+            containerId={"error"}
+          />
           <div className="flex-none">
             <button
               className="btn btn-ghost drawer-button"
@@ -329,6 +392,18 @@ export default function Navbar() {
     return (
       <>
         <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-lg bg-opacity-40">
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="colored"
+            limit={1}
+            containerId={"error"}
+          />
           <div className="flex-1">
             <Link
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
@@ -425,6 +500,18 @@ export default function Navbar() {
           </div>
         </div>
         <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+          <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="colored"
+            limit={1}
+            containerId={"error"}
+          />
           <div className="flex-none">
             <button className="btn btn-ghost" onClick={() => setOpen(!open)}>
               <RiMenuFill size="1.5rem" />

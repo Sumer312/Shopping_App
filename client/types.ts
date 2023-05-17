@@ -6,6 +6,7 @@ export interface cardPropType {
   price: number;
 }
 
+
 export interface ordersType {
   _id: string;
   products: Array<{
@@ -29,6 +30,7 @@ export interface cartCardType {
   snippet: string;
   quantity: number;
   maxQuantity: number;
+  price: number;
   id: string;
 }
 

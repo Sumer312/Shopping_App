@@ -103,7 +103,7 @@ const placeOrder = async (req: Request, res: Response, next: NextFunction) => {
     res.status(404).json({ message: "No such product exists" });
     return;
   } else if (prod.quantity < quantity) {
-    res.status(400).json({ message: "not enough quantity" });
+    res.status(400).json({ message: "Not enough quantity" });
     return;
   }
   Order.create({
@@ -132,7 +132,7 @@ const getOrders = async (req: Request, res: Response, next: NextFunction) => {
     if (orders.length > 0) {
       res.status(200).json({ message: "Orders found", orders: orders });
     } else {
-      res.status(404).json({ message: "no orders found" });
+      res.status(404).json({ message: "No orders found" });
     }
   });
 };
@@ -148,7 +148,7 @@ const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
               product.quantity += order.products[i].quantity;
               product.save();
             } else {
-              console.log("no product found");
+              console.log("No product found");
             }
           });
         }
@@ -173,6 +173,7 @@ const getCart = async (req: Request, res: Response, next: NextFunction) => {
     snippet: string;
     maxQuantity: number;
     quantity: number;
+    price: number;
     id: Types.ObjectId;
   }> = [];
   Consumer.findById(consumerId)
@@ -185,6 +186,7 @@ const getCart = async (req: Request, res: Response, next: NextFunction) => {
                 title: product.title,
                 snippet: product.snippet,
                 maxQuantity: product.quantity,
+                price: product.price,
                 quantity: consumer.cart.items[i].quantity,
                 id: product._id,
               });
@@ -301,7 +303,7 @@ const clearCart = async (req: Request, res: Response, next: NextFunction) => {
   Consumer.findById(consumerId).then((consumer) => {
     if (consumer) {
       consumer.clearCart();
-      res.status(200).json({ message: "cart cleared" });
+      res.status(200).json({ message: "Cart cleared" });
     }
   });
 };

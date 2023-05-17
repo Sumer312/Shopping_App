@@ -85,7 +85,13 @@ export default function Login() {
             changeRoleToConsumer(response.data.token, response.data.id);
           }
         })
-        .catch((err) => notifyError(err.message));
+        .catch((err) =>
+          notifyError(
+            err.response && err.response.data
+              ? err.response.data.message
+              : err.message
+          )
+        );
     }
   }
   return (
@@ -189,7 +195,7 @@ export default function Login() {
                     className="btn btn-primary"
                     data-theme={theme}
                   >
-                    Submit
+                    Login
                   </button>
                   <p
                     className={

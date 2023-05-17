@@ -13,6 +13,7 @@ import useAuthStore from "../components/store/authStore";
 import { useNavigate } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { toast, ToastContainer, Flip } from "react-toastify";
+import { Triangle } from "react-loader-spinner";
 
 enum ActionEnum {
   SET_TITLE = "SET_TITLE",
@@ -47,6 +48,7 @@ export default function AddProd() {
   const theme = useThemeStore((state) => state.theme);
   const [stateTheme, setStateTheme] = useState<string>();
   const token = useAuthStore((state) => state.token);
+  const [overlay, setOverlay] = useState(false);
 
   useEffect(() => {
     setStateTheme(theme);
@@ -176,7 +178,7 @@ export default function AddProd() {
   };
 
   const notifyError = (text: string) => {
-    toast.success(text, {
+    toast.error(text, {
       toastId: "error",
       position: "top-center",
       autoClose: 2000,
@@ -204,6 +206,7 @@ export default function AddProd() {
     });
   };
   async function handleSubmit(event: MouseEvent<HTMLElement>) {
+    setOverlay(true);
     event.preventDefault();
     const {
       title,
@@ -251,16 +254,17 @@ export default function AddProd() {
             }, 3000);
           }
         })
-        .catch((err) => notifyError(err.message));
+        .catch((err) =>
+          notifyError(
+            err.response && err.response.data
+              ? err.response.data.message
+              : err.message
+          )
+        );
     }
   }
   return (
-    <div
-      className={
-        "flex overflow-x-scroll scrollbar-hide" +
-        (stateTheme === themeEnum.LIGHT ? "-light" : "")
-      }
-    >
+    <>
       <ToastContainer
         position="top-center"
         autoClose={2000}
@@ -285,267 +289,293 @@ export default function AddProd() {
         limit={1}
         containerId={"error"}
       />
-      <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
-        <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mb-4 mr-96"
-            }
-            htmlFor="title"
-          >
-            Name
-          </label>
-          <input
-            type="text"
-            placeholder="Type here"
-            name="title"
-            value={state.title}
-            required
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_TITLE,
-                payload: event.target.value,
-                payloadFileList: undefined,
-              });
-            }}
+      {overlay && (
+        <div
+          className="fixed"
+          style={{ zIndex: "99999999", right: "45%", top: "10%" }}
+        >
+          <Triangle
+            height="200"
+            width="200"
+            color="hsl(var(--a))"
+            ariaLabel="triangle-loading"
+            wrapperClass=""
+            wrapperStyle={{}}
+            visible={true}
           />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mb-4 mr-96"
-            }
-            htmlFor="snippet"
-          >
-            Snippet
-          </label>
-          <input
-            type="text"
-            placeholder="Type here"
-            name="snippet"
-            required
-            value={state.snippet}
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_SNIPPET,
-                payload: event.target.value,
-                payloadFileList: undefined,
-              });
-            }}
-          />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mb-4"
-                : "block text-gray-900 text-sm font-bold mb-4"
-            }
-            htmlFor="description"
-          >
-            Description
-          </label>
-          <textarea
-            className="textarea textarea-accent h-44 lg:h-64 md:h-56 sm:h-56 xl:h-56 w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
-            name="description"
-            value={state.description}
-            required
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_DESCRIPTION,
-                payload: event.target.value,
-                payloadFileList: undefined,
-              });
-            }}
-            placeholder="Description"
-          ></textarea>
         </div>
-        <div className="grid h-96 flex-grow card place-items-start xs:mt-12 xl:-mt-8 lg:-mt-8 xl:ml-36">
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
-            }
-            htmlFor="quantity"
-          >
-            Quantity
-          </label>
-          <input
-            type="number"
-            value={state.quantity}
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_QUANTITY,
-                payload: event.target.value,
-                payloadFileList: undefined,
-              });
-            }}
-            name="quantity"
-            required
-            placeholder="Enter quantity"
-            min="1"
-          />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
-            }
-            htmlFor="price"
-          >
-            Price
-          </label>
-          <input
-            type="number"
-            value={state.price}
-            placeholder="Enter price"
-            id="price"
-            step="10"
-            className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
-            data-theme={stateTheme}
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_PRICE,
-                payload: event.target.value,
-                payloadFileList: undefined,
-              });
-            }}
-            required
-          />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mt-4 mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mt-4 mb-4 mr-96"
-            }
-            htmlFor="CoverImage"
-          >
-            Cover Image
-          </label>
-          <input
-            type="file"
-            className="file-input file-input-bordered file-input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm"
-            name="CoverImage"
-            accept="image/*"
-            required
-            data-theme={stateTheme}
-            onChange={async (event) => {
-              if (event.target.files !== null) {
-                const image: File = event.target.files[0];
-                fileHandler(image).then((result) => {
+      )}
+      <div className={overlay ? " pointer-events-none opacity-60" : ""}>
+        <div
+          className={
+            "flex overflow-x-scroll scrollbar-hide" +
+            (stateTheme === themeEnum.LIGHT ? "-light" : "")
+          }
+        >
+          <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
+            <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mb-4 mr-96"
+                }
+                htmlFor="title"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                placeholder="Type here"
+                name="title"
+                value={state.title}
+                required
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
+                data-theme={stateTheme}
+                onChange={(event) => {
                   dispatch({
-                    type: ActionEnum.SET_COVER_IMAGE,
-                    payload: JSON.stringify(result),
+                    type: ActionEnum.SET_TITLE,
+                    payload: event.target.value,
                     payloadFileList: undefined,
                   });
-                });
-              }
-            }}
-          />
-          <br />
-          <label
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block text-gray-100 text-sm font-bold mt-4 mb-4 mr-96"
-                : "block text-gray-900 text-sm font-bold mt-4 mb-4 mr-96"
-            }
-            htmlFor="ImageArray"
-          >
-            Product Images
-          </label>
-          <input
-            type="file"
-            className="file-input file-input-bordered file-input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm"
-            name="ImageArray"
-            accept="image/*"
-            multiple
-            data-theme={stateTheme}
-            onChange={async (event) => {
-              if (event.target.files !== null) {
-                const fileList: Array<string | ArrayBuffer | null> = [];
-                for (let i = 0; i < event.target.files.length; i++) {
-                  fileHandler(event.target.files[i])
-                    .then((result) => fileList.push(result))
-                    .then(() => {
-                      if (
-                        event.target.files &&
-                        i + 1 === event.target.files.length
-                      ) {
-                        dispatch({
-                          type: ActionEnum.SET_IMAGE_ARRAY,
-                          payload: "",
-                          payloadFileList: fileList,
-                        });
-                      }
-                    });
+                }}
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mb-4 mr-96"
                 }
-              }
-            }}
-          />
-        </div>
-        <div className="grid h-96 flex-grow card place-items-center mt-64 sm:mt-64 lg:mt-0 xl:mt-0">
-          <label
-            htmlFor=""
-            className={
-              stateTheme === themeEnum.DARK
-                ? "block mr-56 -mt-24 text-gray-100 text-sm font-bold"
-                : "block mr-56 -mt-24 text-gray-900 text-sm font-bold"
-            }
-          >
-            Category
-          </label>
-          <select
-            className="select select-accent -mt-48 w-full max-w-xs"
-            value={state.category}
-            data-theme={stateTheme}
-            defaultValue="Mtops"
-            onChange={(event) => {
-              dispatch({
-                type: ActionEnum.SET_CATEGORY,
-                payload: event.target.value,
-                payloadFileList: undefined,
-              });
-            }}
-          >
-            <optgroup label="Men">
-              <option value="Mtops">Tops</option>
-              <option value="Mbots">Bottoms</option>
-              <option value="Mhoods">Hoodies</option>
-            </optgroup>
-            <optgroup label="Women">
-              <option value="Wtops">Tops</option>
-              <option value="Wbots">Bottoms</option>
-              <option value="Whoods">Hoodies</option>
-            </optgroup>
-            <optgroup label="Unisex">
-              <option value="Utops">Tops</option>
-              <option value="Ubots">Bottoms</option>
-              <option value="Uhoods">Hoodies</option>
-            </optgroup>
-          </select>
-          <button
-            className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide gap-2"
-            data-theme={stateTheme}
-            type="submit"
-            onClick={handleSubmit}
-          >
-            <BsPlusCircleFill />
-            Add
-          </button>
+                htmlFor="snippet"
+              >
+                Snippet
+              </label>
+              <input
+                type="text"
+                placeholder="Type here"
+                name="snippet"
+                required
+                value={state.snippet}
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
+                data-theme={stateTheme}
+                maxLength={100}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_SNIPPET,
+                    payload: event.target.value,
+                    payloadFileList: undefined,
+                  });
+                }}
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mb-4"
+                    : "block text-gray-900 text-sm font-bold mb-4"
+                }
+                htmlFor="description"
+              >
+                Description
+              </label>
+              <textarea
+                className="textarea textarea-accent h-44 lg:h-64 md:h-56 sm:h-56 xl:h-56 w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-lg p-10"
+                name="description"
+                value={state.description}
+                required
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_DESCRIPTION,
+                    payload: event.target.value,
+                    payloadFileList: undefined,
+                  });
+                }}
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div className="grid h-96 flex-grow card place-items-start xs:mt-12 xl:-mt-8 lg:-mt-8 xl:ml-36">
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
+                }
+                htmlFor="quantity"
+              >
+                Quantity
+              </label>
+              <input
+                type="number"
+                value={state.quantity}
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_QUANTITY,
+                    payload: event.target.value,
+                    payloadFileList: undefined,
+                  });
+                }}
+                name="quantity"
+                required
+                placeholder="Enter quantity"
+                min="1"
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mt-8 mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mt-8 mb-4 mr-96"
+                }
+                htmlFor="price"
+              >
+                Price
+              </label>
+              <input
+                type="number"
+                value={state.price}
+                placeholder="Enter price"
+                id="price"
+                step="10"
+                className="input input-bordered input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm p-10"
+                data-theme={stateTheme}
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_PRICE,
+                    payload: event.target.value,
+                    payloadFileList: undefined,
+                  });
+                }}
+                required
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mt-4 mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mt-4 mb-4 mr-96"
+                }
+                htmlFor="CoverImage"
+              >
+                Cover Image
+              </label>
+              <input
+                type="file"
+                className="file-input file-input-bordered file-input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm"
+                name="CoverImage"
+                accept="image/*"
+                required
+                data-theme={stateTheme}
+                onChange={async (event) => {
+                  if (event.target.files !== null) {
+                    const image: File = event.target.files[0];
+                    fileHandler(image).then((result) => {
+                      dispatch({
+                        type: ActionEnum.SET_COVER_IMAGE,
+                        payload: JSON.stringify(result),
+                        payloadFileList: undefined,
+                      });
+                    });
+                  }
+                }}
+              />
+              <br />
+              <label
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block text-gray-100 text-sm font-bold mt-4 mb-4 mr-96"
+                    : "block text-gray-900 text-sm font-bold mt-4 mb-4 mr-96"
+                }
+                htmlFor="ImageArray"
+              >
+                Product Images
+              </label>
+              <input
+                type="file"
+                className="file-input file-input-bordered file-input-accent w-72 xs:w-full xs:max-w-xs sm:max-w-sm sm:w-full md:max-w-sm md:w-full lg:w-full lg:max-w-sm xl:w-full xl:max-w-sm"
+                name="ImageArray"
+                accept="image/*"
+                multiple
+                data-theme={stateTheme}
+                onChange={async (event) => {
+                  if (event.target.files !== null) {
+                    const fileList: Array<string | ArrayBuffer | null> = [];
+                    for (let i = 0; i < event.target.files.length; i++) {
+                      fileHandler(event.target.files[i])
+                        .then((result) => fileList.push(result))
+                        .then(() => {
+                          if (
+                            event.target.files &&
+                            i + 1 === event.target.files.length
+                          ) {
+                            dispatch({
+                              type: ActionEnum.SET_IMAGE_ARRAY,
+                              payload: "",
+                              payloadFileList: fileList,
+                            });
+                          }
+                        });
+                    }
+                  }
+                }}
+              />
+            </div>
+            <div className="grid h-96 flex-grow card place-items-center mt-64 sm:mt-64 lg:mt-0 xl:mt-0">
+              <label
+                htmlFor=""
+                className={
+                  stateTheme === themeEnum.DARK
+                    ? "block mr-56 -mt-24 text-gray-100 text-sm font-bold"
+                    : "block mr-56 -mt-24 text-gray-900 text-sm font-bold"
+                }
+              >
+                Category
+              </label>
+              <select
+                className="select select-accent -mt-48 w-full max-w-xs"
+                value={state.category}
+                data-theme={stateTheme}
+                defaultValue="Mtops"
+                onChange={(event) => {
+                  dispatch({
+                    type: ActionEnum.SET_CATEGORY,
+                    payload: event.target.value,
+                    payloadFileList: undefined,
+                  });
+                }}
+              >
+                <optgroup label="Men">
+                  <option value="Mtops">Tops</option>
+                  <option value="Mbots">Bottoms</option>
+                  <option value="Mhoods">Hoodies</option>
+                </optgroup>
+                <optgroup label="Women">
+                  <option value="Wtops">Tops</option>
+                  <option value="Wbots">Bottoms</option>
+                  <option value="Whoods">Hoodies</option>
+                </optgroup>
+                <optgroup label="Unisex">
+                  <option value="Utops">Tops</option>
+                  <option value="Ubots">Bottoms</option>
+                  <option value="Uhoods">Hoodies</option>
+                </optgroup>
+              </select>
+              <button
+                className="btn btn-lg btn-outline btn-neutral xs:btn-wide sm:btn-wide gap-2"
+                data-theme={stateTheme}
+                type="submit"
+                onClick={handleSubmit}
+              >
+                <BsPlusCircleFill />
+                Add
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -25,7 +25,7 @@ export default function Product(props: cardPropType) {
         <h2 className="card-title">{props.title}</h2>
         <p>{props.snippet}</p>
         <div className="card-actions justify-end px-4 py-4">
-          <h2>{props.price}</h2>
+          <h2 className="font-extrabold text-lg text-primary">{props.price} $</h2>
         </div>
       </div>
     </div>

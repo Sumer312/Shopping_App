@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../../../components/store/authStore";
 import { ToastContainer, toast, Flip } from "react-toastify";
 
+
 enum ActionEnum {
   SET_NAME = "SET_NAME",
   SET_EMAIL = "SET_EMAIL",
@@ -111,7 +112,13 @@ export default function SignUp() {
             changeRoleToSeller(response.data.token, response.data.id);
           }
         })
-        .catch((err) => notifyError(err.message));
+        .catch((err) =>
+          notifyError(
+            err.response && err.response.data
+              ? err.response.data.message
+              : err.message
+          )
+        );
     }
   }
   return (
@@ -281,7 +288,7 @@ export default function SignUp() {
                     className="btn btn-primary"
                     data-theme={theme}
                   >
-                    Submit
+                    Sign up
                   </button>
                   <p
                     className={

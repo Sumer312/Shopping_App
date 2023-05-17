@@ -15,7 +15,7 @@ export default function Details() {
   const [prod, setProd] = useState<prodType>();
   const [cartQuantity, setCartQuantity] = useState<number>(1);
   const ID = useAuthStore((state) => state.ID);
-  const token = useAuthStore((state) => state.token)
+  const token = useAuthStore((state) => state.token);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -41,9 +41,11 @@ export default function Details() {
   return prod ? (
     <main className={styles.main}>
       {<Carousel key={prod.title} imageArray={CarouselReady(prod)} />}
-      <h1>{prod.title}</h1>
-      <p>{prod.description}</p>
-      <p>{prod.price}</p>
+      <div className="grid grid-cols-1 gap-10">
+        <h1 className="text-6xl">{prod.title}</h1>
+        <p className=" text-center">{prod.description}</p>
+        <p className="font-extrabold text-accent-content text-3xl">{prod.price} $</p>
+      </div>
       <div className="grid grid-cols-1 gap-4">
         <button
           data-theme={stateTheme}
@@ -83,6 +85,9 @@ export default function Details() {
             <button
               className="btn btn-accent btn-outline btn-lg btn-square"
               onClick={() => {
+                if (!token) {
+                  navigate("/auth/consumer/login");
+                }
                 axios
                   .post(
                     "/consumer/add-to-cart",
