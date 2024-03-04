@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import Product from "../models/products";
 import Consumer from "../models/consumers";
 import bcrypt from "bcrypt";
@@ -8,8 +8,7 @@ import { Types } from "mongoose";
 
 const sendDataByCategory = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { category } = req.params;
   const data = await Product.find({ category: category });
@@ -18,8 +17,7 @@ const sendDataByCategory = async (
 
 const sendDataById = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { prodID } = req.params;
   console.log(prodID);
@@ -27,7 +25,7 @@ const sendDataById = async (
   res.status(200).json(JSON.stringify(data));
 };
 
-const login = async (req: Request, res: Response, next: NextFunction) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   await Consumer.findOne({ email: email }).then((consumer) => {
     if (!consumer) {
@@ -60,7 +58,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const signup = async (req: Request, res: Response, next: NextFunction) => {
+const signup = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   const prevEmail = await Consumer.findOne({ email: email });
   if (prevEmail) {
@@ -96,7 +94,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const placeOrder = async (req: Request, res: Response, next: NextFunction) => {
+const placeOrder = async (req: Request, res: Response) => {
   const { quantity, prodId, consumerId } = req.body;
   const prod = await Product.findById(prodId);
   if (!prod) {
@@ -126,7 +124,7 @@ const placeOrder = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const getOrders = async (req: Request, res: Response, next: NextFunction) => {
+const getOrders = async (req: Request, res: Response) => {
   const { consumerId } = req.params;
   Order.find({ consumerId: consumerId }).then((orders) => {
     if (orders.length > 0) {
@@ -137,7 +135,7 @@ const getOrders = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
+const cancelOrder = async (req: Request, res: Response) => {
   const { orderId } = req.params;
   Order.findById(orderId)
     .then((order) => {
@@ -166,7 +164,7 @@ const cancelOrder = async (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-const getCart = async (req: Request, res: Response, next: NextFunction) => {
+const getCart = async (req: Request, res: Response) => {
   const { consumerId } = req.params;
   let prodArray: Array<{
     title: string;
@@ -206,7 +204,7 @@ const getCart = async (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
-const addToCart = async (req: Request, res: Response, next: NextFunction) => {
+const addToCart = async (req: Request, res: Response) => {
   const { prodId, consumerId, quantity } = req.body;
   try {
     Consumer.findById(consumerId).then((consumer) => {
@@ -227,8 +225,7 @@ const addToCart = async (req: Request, res: Response, next: NextFunction) => {
 
 const incrementCart = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { prodId, consumerId } = req.body;
   try {
@@ -252,8 +249,7 @@ const incrementCart = async (
 
 const decrementCart = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { prodId, consumerId } = req.body;
   try {
@@ -277,8 +273,7 @@ const decrementCart = async (
 
 const removeFromCart = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { prodId, consumerId } = req.body;
   try {
@@ -298,7 +293,7 @@ const removeFromCart = async (
   }
 };
 
-const clearCart = async (req: Request, res: Response, next: NextFunction) => {
+const clearCart = async (req: Request, res: Response) => {
   const { consumerId } = req.params;
   Consumer.findById(consumerId).then((consumer) => {
     if (consumer) {

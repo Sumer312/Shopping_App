@@ -12,7 +12,7 @@ import {
 } from "react-icons/bs";
 import { GiRobinHoodHat } from "react-icons/gi";
 
-import { CiLogout, CiCreditCard1, CiLogin, CiMenuKebab } from "react-icons/ci";
+import { CiLogout, CiCreditCard1, CiLogin } from "react-icons/ci";
 import {
   RiLoginBoxFill,
   RiMenuFill,
@@ -74,7 +74,7 @@ export default function Navbar() {
   const SellerNavbar = () => {
     return (
       <>
-        <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="hidden fixed z-40 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <ToastContainer
             position="top-center"
             autoClose={2000}
@@ -113,7 +113,7 @@ export default function Navbar() {
                 </a>
               </li>
             </ul>
-            <div className="dropdown dropdown-end">
+            <div className="dropdown dropdown-bottom dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-8 rounded-full">
                   <BsFillPersonFill size="2rem" />
@@ -139,7 +139,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="fixed z-40 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <ToastContainer
             position="top-center"
             autoClose={2000}
@@ -203,7 +203,7 @@ export default function Navbar() {
   const ConsumerNavbar = () => {
     return (
       <>
-        <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="hidden fixed z-40 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <ToastContainer
             position="top-center"
             autoClose={2000}
@@ -225,101 +225,105 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="flex-none">
-            <ul className="menu menu-horizontal px-1 mr-3">
-              <li tabIndex={0}>
-                <a>
-                  Men
-                  <RiArrowDropDownLine size="1.25rem" />
-                </a>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <Link to="/men/tops">Tops</Link>
-                  </li>
-                  <li>
-                    <Link to="/men/hoodies">Hoodies</Link>
-                  </li>
-                  <li>
-                    <Link to="/men/bottoms">Bottoms</Link>
-                  </li>
-                </ul>
-              </li>
-              <li tabIndex={0}>
-                <a>
-                  Women
-                  <RiArrowDropDownLine size="1.25rem" />
-                </a>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <Link to="/women/tops">Tops</Link>
-                  </li>
-                  <li>
-                    <Link to="/women/hoodies">Hoodies</Link>
-                  </li>
-                  <li>
-                    <Link to="/women/bottoms">Bottoms</Link>
-                  </li>
-                </ul>
-              </li>
-              <li tabIndex={0}>
-                <a>
-                  Unisex
-                  <RiArrowDropDownLine size="1.25rem" />
-                </a>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <Link to="/unisex/tops">Tops</Link>
-                  </li>
-                  <li>
-                    <Link to="/unisex/hoodies">Hoodies</Link>
-                  </li>
-                  <li>
-                    <Link to="/unisex/bottoms">Bottoms</Link>
-                  </li>
-                </ul>
-              </li>
-              <li tabIndex={0}>
-                <a onClick={changeTheme}>
-                  {stateTheme === themeEnum.DARK ? (
-                    <BsFillBrightnessHighFill size="1.5rem" />
-                  ) : (
-                    <BsFillMoonStarsFill size="1.1rem" />
-                  )}
-                </a>
-              </li>
-            </ul>
-            <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                <div className="w-8 rounded-full">
-                  <BsFillPersonFill size="2rem" />
-                </div>
-              </label>
-              <ul
-                tabIndex={0}
-                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              >
-                <li>
-                  <Link to="/my-orders">
-                    <CiCreditCard1 />
-                    My Orders
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/my-cart">
-                    <BsCartFill />
-                    My Cart
-                  </Link>
-                </li>
-                <li onClick={logout}>
+            <div className="menu menu-horizontal gap-4">
+              <ul className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                <li tabIndex={0}>
                   <a>
-                    <CiLogout />
-                    Logout
+                    Men
+                    <RiArrowDropDownLine size="1.25rem" />
                   </a>
+                  <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40 rounded-box w-52">
+                    <li>
+                      <Link to="/men/tops">Tops</Link>
+                    </li>
+                    <li>
+                      <Link to="/men/hoodies">Hoodies</Link>
+                    </li>
+                    <li>
+                      <Link to="/men/bottoms">Bottoms</Link>
+                    </li>
+                  </ul>
                 </li>
               </ul>
+              <ul className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                <li tabIndex={0}>
+                  <a>
+                    Women
+                    <RiArrowDropDownLine size="1.25rem" />
+                  </a>
+                  <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40 rounded-box w-52">
+                    <li>
+                      <Link to="/women/tops">Tops</Link>
+                    </li>
+                    <li>
+                      <Link to="/women/hoodies">Hoodies</Link>
+                    </li>
+                    <li>
+                      <Link to="/women/bottoms">Bottoms</Link>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <ul className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                <li tabIndex={0}>
+                  <a>
+                    Unisex
+                    <RiArrowDropDownLine size="1.25rem" />
+                  </a>
+                  <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40 rounded-box w-52">
+                    <li>
+                      <Link to="/unisex/tops">Tops</Link>
+                    </li>
+                    <li>
+                      <Link to="/unisex/hoodies">Hoodies</Link>
+                    </li>
+                    <li>
+                      <Link to="/unisex/bottoms">Bottoms</Link>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <a onClick={changeTheme} className="mt-2 cursor-pointer">
+                {stateTheme === themeEnum.DARK ? (
+                  <BsFillBrightnessHighFill size="1.5rem" />
+                ) : (
+                  <BsFillMoonStarsFill size="1.3rem" />
+                )}
+              </a>
+              <div className="dropdown dropdown-bottom dropdown-end">
+                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                  <div className="w-8 rounded-full">
+                    <BsFillPersonFill size="1.5rem" />
+                  </div>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[1] menu p-2 shadow bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40 rounded-box w-52"
+                >
+                  <li>
+                    <Link to="/my-orders">
+                      <CiCreditCard1 />
+                      My Orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/my-cart">
+                      <BsCartFill />
+                      My Cart
+                    </Link>
+                  </li>
+                  <li onClick={logout}>
+                    <a>
+                      <CiLogout />
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-        <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="fixed z-40 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <ToastContainer
             position="top-center"
             autoClose={2000}
@@ -391,7 +395,7 @@ export default function Navbar() {
   const GuestNavbar = () => {
     return (
       <>
-        <div className="hidden fixed z-50 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-lg bg-opacity-40">
+        <div className="hidden fixed z-40 md:navbar lg:navbar xl:navbar bg-base-100 backdrop-filter backdrop-blur-lg bg-opacity-40">
           <ToastContainer
             position="top-center"
             autoClose={2000}
@@ -413,58 +417,64 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="flex-none">
-            <ul className="menu menu-horizontal px-1 mr-3">
-              <li tabIndex={0}>
-                <a>
-                  Men
-                  <RiArrowDropDownLine size="1.25rem" />
-                </a>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <Link to="/men/tops">Tops</Link>
-                  </li>
-                  <li>
-                    <Link to="/men/hoodies">Hoodies</Link>
-                  </li>
-                  <li>
-                    <Link to="/men/bottoms">Bottoms</Link>
-                  </li>
-                </ul>
-              </li>
-              <li tabIndex={0}>
-                <a>
-                  Women
-                  <RiArrowDropDownLine size="1.25rem" />
-                </a>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <Link to="/women/tops">Tops</Link>
-                  </li>
-                  <li>
-                    <Link to="/women/hoodies">Hoodies</Link>
-                  </li>
-                  <li>
-                    <Link to="/women/bottoms">Bottoms</Link>
-                  </li>
-                </ul>
-              </li>
-              <li tabIndex={0}>
-                <a>
-                  Unisex
-                  <RiArrowDropDownLine size="1.25rem" />
-                </a>
-                <ul className="p-2 bg-base-100">
-                  <li>
-                    <Link to="/unisex/tops">Tops</Link>
-                  </li>
-                  <li>
-                    <Link to="/unisex/hoodies">Hoodies</Link>{" "}
-                  </li>
-                  <li>
-                    <Link to="/unisex/bottoms">Bottoms</Link>
-                  </li>
-                </ul>
-              </li>
+            <div className="menu menu-horizontal gap-4">
+              <ul className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                <li tabIndex={0}>
+                  <a>
+                    Men
+                    <RiArrowDropDownLine size="1.25rem" />
+                  </a>
+                  <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40 rounded-box w-52">
+                    <li>
+                      <Link to="/men/tops">Tops</Link>
+                    </li>
+                    <li>
+                      <Link to="/men/hoodies">Hoodies</Link>
+                    </li>
+                    <li>
+                      <Link to="/men/bottoms">Bottoms</Link>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <ul className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                <li tabIndex={0}>
+                  <a>
+                    Women
+                    <RiArrowDropDownLine size="1.25rem" />
+                  </a>
+                  <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40 rounded-box w-52">
+                    <li>
+                      <Link to="/women/tops">Tops</Link>
+                    </li>
+                    <li>
+                      <Link to="/women/hoodies">Hoodies</Link>
+                    </li>
+                    <li>
+                      <Link to="/women/bottoms">Bottoms</Link>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <ul className="dropdown dropdown-hover dropdown-bottom dropdown-end">
+                <li tabIndex={0}>
+                  <a>
+                    Unisex
+                    <RiArrowDropDownLine size="1.25rem" />
+                  </a>
+                  <ul className="dropdown-content z-[1] menu p-2 shadow bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40 rounded-box w-52">
+                    <li>
+                      <Link to="/unisex/tops">Tops</Link>
+                    </li>
+                    <li>
+                      <Link to="/unisex/hoodies">Hoodies</Link>
+                    </li>
+                    <li>
+                      <Link to="/unisex/bottoms">Bottoms</Link>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
               <li tabIndex={0}>
                 <a onClick={changeTheme}>
                   {stateTheme === themeEnum.DARK ? (
@@ -474,7 +484,7 @@ export default function Navbar() {
                   )}
                 </a>
               </li>
-            </ul>
+            </div>
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-8 rounded-full">
@@ -499,7 +509,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="sticky z-50 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
+        <div className="fixed z-40 md:hidden lg:hidden xl:hidden navbar bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <ToastContainer
             position="top-center"
             autoClose={2000}
@@ -534,7 +544,7 @@ export default function Navbar() {
               )}
             </a>
             <button className="btn btn-circle btn-ghost mr-6">
-              <CiMenuKebab size="1.5rem" />
+              <RiLoginBoxFill size="1.5rem" />
             </button>
             <ul
               tabIndex={0}
@@ -560,6 +570,6 @@ export default function Navbar() {
   return stateRole === authEnum.SELLER
     ? SellerNavbar()
     : stateRole === authEnum.CONSUMER
-    ? ConsumerNavbar()
-    : GuestNavbar();
+      ? ConsumerNavbar()
+      : GuestNavbar();
 }

@@ -20,9 +20,9 @@ const DrawerLayout = ({ children }: Props) => {
         readOnly
       />
       <div className="drawer-content flex flex-col">{children}</div>
-      <div className="drawer-side">
+      <div className="drawer-side z-50">
         <label htmlFor="drawer-overlay" className="drawer-overlay"></label>
-        <ul className="menu p-4 overflow-y-auto w-80 bg-base-100">
+        <ul className="menu p-4 overflow-y-auto h-screen w-80 bg-base-100 backdrop-filter backdrop-blur-md bg-opacity-40">
           <button
             className="btn btn-square btn-sm btn-outline btn-neutral-content place-self-end"
             onClick={() => setOpen(false)}
@@ -31,10 +31,10 @@ const DrawerLayout = ({ children }: Props) => {
           </button>
           <div className="collapse">
             <input type="checkbox" />
-            <div className=" collapse-title btn bg-transparent border-none hover:bg-transparent place-content-start text-lg text-accent">
+            <div className=" collapse-title btn bg-transparent border-none hover:bg-transparent place-content-start text-lg text-accent-content">
               Men
             </div>
-            <ul tabIndex={0} className="collapse-content menu bg-base-100 w-52 -my-4">
+            <ul tabIndex={0} className="collapse-content menu bg-transparent w-52 -my-4">
               <li>
                 <a href="/men/tops" onClick={() => setOpen(!open)}>Tops</a>
               </li>
@@ -48,10 +48,10 @@ const DrawerLayout = ({ children }: Props) => {
           </div>
           <div className="collapse">
             <input type="checkbox" />
-            <div className=" collapse-title btn bg-transparent border-none hover:bg-transparent place-content-start text-lg text-accent">
+            <div className=" collapse-title btn bg-transparent border-none hover:bg-transparent place-content-start text-lg text-accent-content">
               Women
             </div>
-            <ul tabIndex={0} className="collapse-content menu bg-base-100 w-52 -my-4">
+            <ul tabIndex={0} className="collapse-content menu bg-transparent w-52 -my-4">
               <li>
                 <a href="/women/tops" onClick={() => setOpen(!open)}>Tops</a>
               </li>
@@ -65,10 +65,10 @@ const DrawerLayout = ({ children }: Props) => {
           </div>
           <div className="collapse">
             <input type="checkbox" />
-            <div className=" collapse-title btn bg-transparent border-none hover:bg-transparent place-content-start text-lg text-accent">
+            <div className=" collapse-title btn bg-transparent border-none hover:bg-transparent place-content-start text-lg text-accent-content">
               Unisex
             </div>
-            <ul tabIndex={0} className="collapse-content menu bg-base-100 w-52 -my-4">
+            <ul tabIndex={0} className="collapse-content menu bg-transparent w-52 -my-4">
               <li>
                 <a href="/unisex/tops" onClick={() => setOpen(!open)}>Tops</a>
               </li>

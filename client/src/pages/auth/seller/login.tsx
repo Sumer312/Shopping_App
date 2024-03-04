@@ -93,7 +93,7 @@ export default function Login() {
     }
   }
   return (
-    <div className="min-h-screen py-6 flex flex-col justify-center sm:py-12">
+    <div className="min-h-screen flex flex-col justify-center py-12">
       <ToastContainer
         position="top-center"
         autoClose={2000}
@@ -105,113 +105,105 @@ export default function Login() {
         theme="colored"
         limit={1}
       />
-      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-        <div className="relative px-4 py-10 bg-accent shadow-lg sm:rounded-3xl sm:p-20">
+      <div className="relative mx-auto py-3 sm:max-w-xl">
+        <div className="relative bg-accent shadow-lg rounded-xl p-20">
           <div className="max-w-md mx-auto">
-            <div>
-              <h1
-                className={
-                  "text-2xl text" +
-                  (stateTheme === themeEnum.LIGHT ? "-secondary" : "-neutral") +
-                  "-content font-semibold"
-                }
-              >
-                Seller Login
-              </h1>
-            </div>
+            <h1 className="text-2xl text-accent-content font-semibold">Seller Login</h1>
             <div className="divide-y divide-gray-200">
-              <div className="py-8 text-base leading-6 space-y-6 text-gray-700 sm:text-lg sm:leading-7">
-                <div className="relative">
-                  <input
-                    autoComplete="off"
-                    id="email"
-                    name="email"
-                    type="text"
-                    className={
-                      "peer placeholder-transparent bg-accent h-10 w-full border-b-2 border-primary text" +
-                      (stateTheme === themeEnum.LIGHT
-                        ? "-secondary"
-                        : "-neutral") +
-                      "-content focus:outline-none focus:borer-rose-600"
-                    }
-                    placeholder="Email address"
-                    value={state.email}
-                    onChange={(event) =>
-                      dispatch({
-                        type: ActionEnum.SET_EMAIL,
-                        payload: event.target.value,
-                      })
-                    }
-                  />
-                  <label
-                    htmlFor="email"
-                    className={
-                      "absolute left-0 -top-3.5 text-gray-100 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-100 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-primary" +
-                      (stateTheme === themeEnum.DARK ? "-content" : "") +
-                      " peer-focus:text-sm"
-                    }
-                  >
-                    Email Address
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    autoComplete="off"
-                    id="password"
-                    name="password"
-                    type="password"
-                    className={
-                      "peer placeholder-transparent bg-accent h-10 w-full border-b-2 border-primary text" +
-                      (stateTheme === themeEnum.LIGHT
-                        ? "-secondary"
-                        : "-neutral") +
-                      "-content focus:outline-none focus:borer-rose-600"
-                    }
-                    placeholder="Password"
-                    value={state.password}
-                    onChange={(event) =>
-                      dispatch({
-                        type: ActionEnum.SET_PASSWORD,
-                        payload: event.target.value,
-                      })
-                    }
-                  />
-                  <label
-                    htmlFor="password"
-                    className={
-                      "absolute left-0 -top-3.5 text-gray-100 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-100 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-primary" +
-                      (stateTheme === themeEnum.DARK ? "-content" : "") +
-                      " peer-focus:text-sm"
-                    }
-                  >
-                    Password
-                  </label>
-                </div>
-                <div className="relative">
-                  <button
-                    onClick={(event) => postData(event)}
-                    className="btn btn-primary"
-                    data-theme={theme}
-                  >
-                    Login
-                  </button>
-                  <p
-                    className={
-                      "mt-4 text" +
-                      (stateTheme === themeEnum.LIGHT
-                        ? "-secondary"
-                        : "-neutral") +
-                      "-content text-sm"
-                    }
-                  >
-                    Don't have an account{" "}
-                    <Link
-                      className="text-accent-content text-lg hover:underline"
-                      to="/auth/seller/signup"
+              <div className="divide-y divide-gray-200">
+                <div className="py-8 text-base leading-6 space-y-6 text-gray-700 sm:text-lg sm:leading-7">
+                  <div className="relative">
+                    <input
+                      autoComplete="off"
+                      id="email"
+                      name="email"
+                      type="text"
+                      className={
+                        "peer placeholder-transparent bg-accent h-10 w-full border-b-2 border-primary text" +
+                        (stateTheme === themeEnum.LIGHT
+                          ? "-secondary"
+                          : "-neutral") +
+                        "-content focus:outline-none focus:borer-rose-600"
+                      }
+                      placeholder="Email address"
+                      value={state.email}
+                      onChange={(event) =>
+                        dispatch({
+                          type: ActionEnum.SET_EMAIL,
+                          payload: event.target.value,
+                        })
+                      }
+                    />
+                    <label
+                      htmlFor="email"
+                      className={
+                        "absolute left-0 -top-3.5 text-gray-100 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-100 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-primary" +
+                        (stateTheme === themeEnum.DARK ? "-content" : "") +
+                        " peer-focus:text-sm"
+                      }
                     >
-                      Register
-                    </Link>
-                  </p>
+                      Email Address
+                    </label>
+                  </div>
+                  <div className="relative">
+                    <input
+                      autoComplete="off"
+                      id="password"
+                      name="password"
+                      type="password"
+                      className={
+                        "peer placeholder-transparent bg-accent h-10 w-full border-b-2 border-primary text" +
+                        (stateTheme === themeEnum.LIGHT
+                          ? "-secondary"
+                          : "-neutral") +
+                        "-content focus:outline-none focus:borer-rose-600"
+                      }
+                      placeholder="Password"
+                      value={state.password}
+                      onChange={(event) =>
+                        dispatch({
+                          type: ActionEnum.SET_PASSWORD,
+                          payload: event.target.value,
+                        })
+                      }
+                    />
+                    <label
+                      htmlFor="password"
+                      className={
+                        "absolute left-0 -top-3.5 text-gray-100 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-100 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-primary" +
+                        (stateTheme === themeEnum.DARK ? "-content" : "") +
+                        " peer-focus:text-sm"
+                      }
+                    >
+                      Password
+                    </label>
+                  </div>
+                  <div className="relative">
+                    <button
+                      onClick={(event) => postData(event)}
+                      className="btn btn-primary"
+                      data-theme={theme}
+                    >
+                      Login
+                    </button>
+                    <p
+                      className={
+                        "mt-4 text" +
+                        (stateTheme === themeEnum.LIGHT
+                          ? "-secondary"
+                          : "-neutral") +
+                        "-content text-sm"
+                      }
+                    >
+                      Don't have an account?{" "}
+                      <Link
+                        className="text-accent-content text-lg hover:underline"
+                        to="/auth/seller/signup"
+                      >
+                        Register
+                      </Link>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

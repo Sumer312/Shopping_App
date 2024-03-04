@@ -312,8 +312,8 @@ export default function AddProd() {
             (stateTheme === themeEnum.LIGHT ? "-light" : "")
           }
         >
-          <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
-            <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
+          <div className="flex xl:flex-row flex-col w-full p-24">
+            <div className="grid h-96 flex-grow card mb-36 xl:mb-36">
               <label
                 className={
                   stateTheme === themeEnum.DARK

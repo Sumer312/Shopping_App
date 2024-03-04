@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { Schema } from "mongoose";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -24,7 +24,6 @@ const createRefreshToken = async (id: any) => {
 export const logout = async (
   req: Request,
   res: Response,
-  next: NextFunction
 ) => {
   if (req.seller) {
     req.seller = null;

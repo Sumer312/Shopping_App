@@ -9,7 +9,7 @@ import isAuth from "./middleware/isAuth";
 const app: Express = express();
 const PORT = process.env.PORT || 5000;
 
-const MONGODB_URI: string = "mongodb://mongo:27017/PMS";
+const MONGODB_URI: string = "mongodb://localhost:27017/PMS";
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));

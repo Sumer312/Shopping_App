@@ -43,7 +43,7 @@ export default function Details() {
       {<Carousel key={prod.title} imageArray={CarouselReady(prod)} />}
       <div className="grid grid-cols-1 gap-10">
         <h1 className="text-6xl">{prod.title}</h1>
-        <p className=" text-center">{prod.description}</p>
+        <p className=" text-center break-words">{prod.description}</p>
         <p className="font-extrabold text-accent-content text-3xl">{prod.price} $</p>
       </div>
       <div className="grid grid-cols-1 gap-4">
@@ -51,7 +51,7 @@ export default function Details() {
           data-theme={stateTheme}
           className={
             prod.quantity !== 0
-              ? "btn btn-lg btn-wide btn-outline btn-neutral"
+              ? "btn btn-lg btn-outline btn-neutral"
               : "btn btn-disabled btn-wide btn-lg"
           }
           onClick={() => navigate(`/buy-product/${params.prodId}`)}
@@ -60,19 +60,19 @@ export default function Details() {
         </button>
         <div tabIndex={0} className={prod.quantity > 0 ? "collapse" : "hidden"}>
           <input type="checkbox" />
-          <div
+          <button
             date-theme={stateTheme}
-            className="collapse-title btn btn-wide btn-lg btn-accent"
+            className="collapse-title btn btn-lg btn-accent"
           >
             Add to cart
-          </div>
+          </button>
           <div className="collapse-content grid gap-8 grid-cols-1">
             <label htmlFor="cartQuantity" className="mt-4">
               Quantity
             </label>
             <input
               type="number"
-              className="input input-bordered input-accent w-56 p-10"
+              className="input input-bordered input-accent xl:w-56 p-10"
               id="cartQuantity"
               min="1"
               max={prod.quantity}
