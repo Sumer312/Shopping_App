@@ -299,7 +299,7 @@ export default function EditProd() {
             (stateTheme === themeEnum.LIGHT ? "-light" : "")
           }
         >
-          <div className="flex flex-col w-full sm:flex-col lg:flex-row p-24">
+          <div className="flex xl:flex-row flex-col w-screen xl:p-24 py-24 px-12">
             <div className="grid h-96 flex-grow card place-items-start mb-36 xl:mb-36">
               <label
                 className={

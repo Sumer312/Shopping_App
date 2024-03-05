@@ -308,11 +308,11 @@ export default function AddProd() {
       <div className={overlay ? " pointer-events-none opacity-60" : ""}>
         <div
           className={
-            "flex overflow-x-scroll scrollbar-hide" +
+            "flex scrollbar-hide" +
             (stateTheme === themeEnum.LIGHT ? "-light" : "")
           }
         >
-          <div className="flex xl:flex-row flex-col w-full p-24">
+          <div className="flex xl:flex-row flex-col w-screen xl:p-24 py-24 px-12">
             <div className="grid h-96 flex-grow card mb-36 xl:mb-36">
               <label
                 className={
