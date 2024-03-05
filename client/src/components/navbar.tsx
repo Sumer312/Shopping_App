@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useAuthStore, { authEnum } from "./store/authStore";
 import {
   BsFillBrightnessHighFill,
-  BsFillMoonStarsFill,
+  BsFillBrightnessLowFill,
   BsFillPersonFill,
   BsDatabaseFill,
   BsPlusCircleFill,
@@ -105,11 +105,7 @@ export default function Navbar() {
               </li>
               <li tabIndex={0}>
                 <a onClick={changeTheme}>
-                  {stateTheme === themeEnum.DARK ? (
-                    <BsFillBrightnessHighFill size="1.5rem" />
-                  ) : (
-                    <BsFillMoonStarsFill size="1.1rem" />
-                  )}
+                  {stateTheme === themeEnum.DARK ? <BsFillBrightnessHighFill size="1.5rem" /> : <BsFillBrightnessLowFill size="1.5rem" />}
                 </a>
               </li>
             </ul>
@@ -162,11 +158,7 @@ export default function Navbar() {
           </div>
           <div className="dropdown dropdown-end">
             <a onClick={changeTheme} className="btn btn-ghost">
-              {stateTheme === themeEnum.DARK ? (
-                <BsFillBrightnessHighFill size="1.5rem" />
-              ) : (
-                <BsFillMoonStarsFill size="1.1rem" />
-              )}
+              {stateTheme === themeEnum.DARK ? <BsFillBrightnessHighFill size="1.5rem" /> : <BsFillBrightnessLowFill size="1.5rem" />}
             </a>
             <button className="btn btn-circle btn-ghost mr-6">
               <BsFillPersonFill size="1.5rem" />
@@ -285,11 +277,7 @@ export default function Navbar() {
                 </li>
               </ul>
               <a onClick={changeTheme} className="mt-2 cursor-pointer">
-                {stateTheme === themeEnum.DARK ? (
-                  <BsFillBrightnessHighFill size="1.5rem" />
-                ) : (
-                  <BsFillMoonStarsFill size="1.3rem" />
-                )}
+                {stateTheme === themeEnum.DARK ? <BsFillBrightnessHighFill size="1.5rem" /> : <BsFillBrightnessLowFill size="1.5rem" />}
               </a>
               <div className="dropdown dropdown-bottom dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -355,11 +343,7 @@ export default function Navbar() {
           </div>
           <div className="dropdown dropdown-end">
             <a onClick={changeTheme} className="btn btn-ghost">
-              {stateTheme === themeEnum.DARK ? (
-                <BsFillBrightnessHighFill size="1.5rem" />
-              ) : (
-                <BsFillMoonStarsFill size="1.1rem" />
-              )}
+              {stateTheme === themeEnum.DARK ? <BsFillBrightnessHighFill size="1.5rem" /> : <BsFillBrightnessLowFill size="1.5rem" />}
             </a>
             <button className="btn btn-circle btn-ghost mr-6">
               <BsFillPersonFill size="1.5rem" />
@@ -479,11 +463,7 @@ export default function Navbar() {
               </ul>
               <li tabIndex={0}>
                 <a onClick={changeTheme}>
-                  {stateTheme === themeEnum.DARK ? (
-                    <BsFillBrightnessHighFill size="1.5rem" />
-                  ) : (
-                    <BsFillMoonStarsFill size="1.1rem" />
-                  )}
+                  {stateTheme === themeEnum.DARK ? <BsFillBrightnessHighFill size="1.5rem" /> : <BsFillBrightnessLowFill size="1.5rem" />}
                 </a>
               </li>
             </div>
@@ -539,11 +519,7 @@ export default function Navbar() {
           </div>
           <div className="dropdown dropdown-end">
             <a onClick={changeTheme} className="btn btn-ghost">
-              {stateTheme === themeEnum.DARK ? (
-                <BsFillBrightnessHighFill size="1.5rem" />
-              ) : (
-                <BsFillMoonStarsFill size="1.1rem" />
-              )}
+              {stateTheme === themeEnum.DARK ? <BsFillBrightnessHighFill size="1.5rem" /> : <BsFillBrightnessLowFill size="1.5rem" />}
             </a>
             <button className="btn btn-circle btn-ghost mr-6">
               <RiLoginBoxFill size="1.5rem" />

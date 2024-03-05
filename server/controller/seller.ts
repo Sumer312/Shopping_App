@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import Product from "../models/products";
 import Seller from "../models/seller";
 import bcrypt from "bcrypt";
@@ -7,7 +7,7 @@ import cloudinary from "../config/cloudinary";
 import { createAccessToken } from "./auth";
 import "dotenv/config";
 
-const signup = async (req: Request, res: Response, next: NextFunction) => {
+const signup = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   const prevEmail = await Seller.findOne({ email: email });
   if (prevEmail) {
@@ -40,7 +40,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const login = async (req: Request, res: Response, next: NextFunction) => {
+const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   await Seller.findOne({ email: email }).then((seller) => {
     if (!seller) {
@@ -89,7 +89,7 @@ const cloudinaryUploadFunction = async (
 };
 
 
-const addProduct = async (req: Request, res: Response, next: NextFunction) => {
+const addProduct = async (req: Request, res: Response) => {
   const {
     title,
     snippet,
@@ -159,8 +159,7 @@ const addProduct = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateProduct = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { title, snippet, description, quantity, price, sellerId, prodId } =
     req.body;
@@ -183,7 +182,7 @@ const updateProduct = async (
   }
 };
 
-const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+const getProducts = async (req: Request, res: Response) => {
   const { sellerId } = req.params;
   const products = await Product.find({ sellerId: sellerId });
   res
@@ -197,8 +196,7 @@ const getProducts = async (req: Request, res: Response, next: NextFunction) => {
 
 const getProductById = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { prodId } = req.params;
   const product = await Product.findById(prodId);
@@ -213,8 +211,7 @@ const getProductById = async (
 
 const deleteProduct = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { sellerId, prodId } = req.body;
   try {

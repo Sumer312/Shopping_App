@@ -1,0 +1,24 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const consumer_1 = require("../controller/consumer");
+const isAuth_1 = __importDefault(require("../middleware/isAuth"));
+const consumer_2 = require("../controller/consumer");
+const router = (0, express_1.Router)();
+router.get("/get/:category", consumer_1.sendDataByCategory);
+router.get("/get-by-Id/:prodID", consumer_1.sendDataById);
+router.post("/login", consumer_1.login);
+router.post("/signup", consumer_2.signup);
+router.post("/place-order", isAuth_1.default, consumer_1.placeOrder);
+router.get("/my-orders/:consumerId", isAuth_1.default, consumer_1.getOrders);
+router.delete("/cancel-order/:orderId", isAuth_1.default, consumer_1.cancelOrder);
+router.post("/add-to-cart", isAuth_1.default, consumer_1.addToCart);
+router.post("/increment-cart", isAuth_1.default, consumer_1.incrementCart);
+router.post("/decrement-cart", isAuth_1.default, consumer_1.decrementCart);
+router.post("/delete-from-cart", isAuth_1.default, consumer_1.removeFromCart);
+router.get("/get-cart/:consumerId", isAuth_1.default, consumer_1.getCart);
+router.delete("/clear-cart/:consumerId", isAuth_1.default, consumer_1.clearCart);
+exports.default = router;
