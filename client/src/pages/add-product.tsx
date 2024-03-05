@@ -312,7 +312,7 @@ export default function AddProd() {
             (stateTheme === themeEnum.LIGHT ? "-light" : "")
           }
         >
-          <div className="flex xl:flex-row flex-col w-screen xl:p-24 py-24 px-12">
+          <div className="flex lg:overflow-x-scroll lg:flex-row xl:flex-row flex-col w-screen xl:p-24 py-24 px-12">
             <div className="grid h-96 flex-grow card mb-36 xl:mb-36">
               <label
                 className={
