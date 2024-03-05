@@ -1,4 +1,3 @@
-import { GiRobinHoodHat } from "react-icons/gi";
 import {
   SiTailwindcss,
   SiTypescript,
@@ -20,7 +19,7 @@ export default function Footer() {
   return (
     <footer className="footer p-6 bg-base-100 text-base-content">
       <div>
-        <GiRobinHoodHat size="4rem" />
+        <img width="64" height="64" src="https://img.icons8.com/cotton/64/forester-shirt.png" alt="forester-shirt" />
         <p>
           Clothing Web-App
           <br />
@@ -80,7 +79,7 @@ export default function Footer() {
           Vite
         </p>
         <p className="flex gap-3 mb-3">
-        <SiMongoose size="1.5rem" />
+          <SiMongoose size="1.5rem" />
           Mongoose ODM
         </p>
       </div>

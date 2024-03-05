@@ -10,7 +10,6 @@ import {
   BsPlusCircleFill,
   BsCartFill,
 } from "react-icons/bs";
-import { GiRobinHoodHat } from "react-icons/gi";
 
 import { CiLogout, CiCreditCard1, CiLogin } from "react-icons/ci";
 import {
@@ -92,7 +91,8 @@ export default function Navbar() {
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
-              <GiRobinHoodHat size="4rem" />
+              <img width="64" height="64" src="https://img.icons8.com/cotton/64/forester-shirt.png" alt="forester-shirt" />
+              Clothing App
             </Link>
           </div>
           <div className="flex-none">
@@ -157,7 +157,7 @@ export default function Navbar() {
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
-              <GiRobinHoodHat size="4rem" />
+              <img width="64" height="64" src="https://img.icons8.com/cotton/64/forester-shirt.png" alt="forester-shirt" />
             </Link>
           </div>
           <div className="dropdown dropdown-end">
@@ -221,7 +221,8 @@ export default function Navbar() {
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
-              <GiRobinHoodHat size="4rem" />
+              <img width="64" height="64" src="https://img.icons8.com/cotton/64/forester-shirt.png" alt="forester-shirt" />
+              Clothing App
             </Link>
           </div>
           <div className="flex-none">
@@ -349,7 +350,7 @@ export default function Navbar() {
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
-              <GiRobinHoodHat size="4rem" />
+              <img width="64" height="64" src="https://img.icons8.com/cotton/64/forester-shirt.png" alt="forester-shirt" />
             </Link>
           </div>
           <div className="dropdown dropdown-end">
@@ -413,7 +414,8 @@ export default function Navbar() {
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
-              <GiRobinHoodHat size="4rem" />
+              <img width="64" height="64" src="https://img.icons8.com/cotton/64/forester-shirt.png" alt="forester-shirt" />
+              Clothing App
             </Link>
           </div>
           <div className="flex-none">
@@ -532,7 +534,7 @@ export default function Navbar() {
               className="btn btn-ghost btn-lg text-xl hover:btn-accent"
               to="/"
             >
-              <GiRobinHoodHat size="4rem" />
+              <img width="64" height="64" src="https://img.icons8.com/cotton/64/forester-shirt.png" alt="forester-shirt" />
             </Link>
           </div>
           <div className="dropdown dropdown-end">
