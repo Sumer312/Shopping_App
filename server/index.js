@@ -10,7 +10,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const auth_1 = require("./controller/auth");
 const isAuth_1 = __importDefault(require("./middleware/isAuth"));
-require("dotenv");
+require("dotenv/config");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
 app.use((0, cors_1.default)());
