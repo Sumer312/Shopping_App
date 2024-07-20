@@ -103,6 +103,7 @@ const addProduct = async (req: Request, res: Response) => {
   try {
     console.log(req.seller);
     const coverImageUpload = await cloudinaryUploadFunction(coverImage);
+    console.log(coverImageUpload.secureUrl);
     if (imageArray !== undefined) {
       const imageUrlArray: Array<imageObjectType> = [];
       for (let i = 0; i < imageArray.length; i++) {
