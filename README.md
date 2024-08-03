@@ -45,6 +45,40 @@ And I was also learning TypeScript so this felt like a great project to put that
     <img src="./screenshots/Screenshot from 2024-06-08 18-29-51.png" width="49%"/>
 </p>
 
+## Run
+#### Setting up environment
+###### Installing Docker && MongoDB
+```bash
+sudo apt update
+sudo apt install curl
+curl -fsSL https://get.docker.com/ | sh
+docker pull mongo
+docker run -d --name=PMS -p 27017:27017 mongo
+```
+###### Create a .env file with these parameters
+```env
+PORT=5000
+CLOUDINARY_NAME=<cloudinary-name>
+CLOUDINARY_API_KEY=<cloudinary-api-key>
+CLOUDINARY_API_SECRET=<cloudinary-api-secret>
+ACCESS_TOKEN=<jwt-access-token>
+REFRESH_TOKEN=<jwt-refresh-token>
+MONGODB_URI=mongodb://localhost:27017/PMS
+```
+#### Execution
+###### Start server
+```bash
+docker start PMS
+cd ./server
+yarn start
+```
+
+###### Start client
+```bash
+cd ./client
+yarn dev
+```
+
 ## Tech Stack
 + **Frontend**\
     ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=for-the-badge&logoSize=auto)
